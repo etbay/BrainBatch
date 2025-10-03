@@ -6,7 +6,7 @@ Video Link:
  * Feature n or Bug Fix n
 
 ## Work Summary (Developer Facing)
-During this sprint, our team learned new tools such as Svelte, Django, and postgresQL in order to manage data, make API calls, and provide a smooth web app experience. In order to make the Canvas API call, we had to communciate with the Canvas LMS API. We can use this to view enrolled courses and filter the courses based on access and view such as student, professor, or TA. In order to access the data, we needed the user to generate an access token through their Canvas settings. Having access through a secure login would be ideal but requires access granted by system admins at WSU. 
+During this sprint, our team learned new tools such as Svelte, Django, and postgresQL in order to manage data, make API calls, and provide a smooth web app experience. In order to make the canvas data call, we had to communciate with the Canvas LMS API. We used this to view enrolled courses and filter the courses based on access and enrollment status such as student, professor, or TA. In order to access the data, we need the user to generate an access token through their Canvas settings. Having access through a secure login would be ideal but requires access granted by system admins at WSU. 
 Provide a one paragraph synposis of what your team accomplished this sprint. Don't repeat the "What's New" list of features. Instead, help the instructor understand how you went about the work described there, any barriers you overcame, and any significant learnings for your team.
 
 ## Unfinished Work
@@ -63,3 +63,4 @@ Here are changes we plan to implement in the next sprint:
    * Item 2
 
    * Item x
+

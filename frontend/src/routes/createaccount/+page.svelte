@@ -4,7 +4,7 @@
     <form>
         <div class="form-field">
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username" pattern="[A-Za-z\d_]{3,24}" required>
+            <input type="text" name="username" id="username" pattern="\w&#123;3,24&#125;" required>
             <small>A 3 to 24 character name unique to your account. Can contain letters, numbers, and underscores.</small>
         </div>
         <div class="form-field">

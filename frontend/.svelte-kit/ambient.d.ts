@@ -92,6 +92,7 @@ declare module '$env/static/private' {
 	export const INIT_CWD: string;
 	export const KDE_SESSION_UID: string;
 	export const npm_lifecycle_script: string;
+	export const MOZ_GMP_PATH: string;
 	export const XKB_DEFAULT_LAYOUT: string;
 	export const npm_config_npm_version: string;
 	export const LESSCLOSE: string;
@@ -142,7 +143,6 @@ declare module '$env/static/private' {
 	export const npm_node_execpath: string;
 	export const npm_config_engine_strict: string;
 	export const LESSKEY: string;
-	export const OLDPWD: string;
 	export const KONSOLE_DBUS_WINDOW: string;
 	export const NODE_ENV: string;
 }
@@ -240,6 +240,7 @@ declare module '$env/dynamic/private' {
 		INIT_CWD: string;
 		KDE_SESSION_UID: string;
 		npm_lifecycle_script: string;
+		MOZ_GMP_PATH: string;
 		XKB_DEFAULT_LAYOUT: string;
 		npm_config_npm_version: string;
 		LESSCLOSE: string;
@@ -290,7 +291,6 @@ declare module '$env/dynamic/private' {
 		npm_node_execpath: string;
 		npm_config_engine_strict: string;
 		LESSKEY: string;
-		OLDPWD: string;
 		KONSOLE_DBUS_WINDOW: string;
 		NODE_ENV: string;
 		[key: `PUBLIC_${string}`]: undefined;

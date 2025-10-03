@@ -6,9 +6,7 @@
 
 <header>
 	<div class="corner">
-		<a href="https://svelte.dev/docs/kit">
-			<img src={logo} alt="SvelteKit" />
-		</a>
+		<a href="/">BrainBatch</a>
 	</div>
 
 	<nav>
@@ -19,11 +17,11 @@
 			<li aria-current={page.url.pathname === '/' ? 'page' : undefined}>
 				<a href="/">Home</a>
 			</li>
-			<li aria-current={page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">About</a>
+			<li aria-current={page.url.pathname === '/login' ? 'page' : undefined}>
+				<a href="/login">Log in</a>
 			</li>
-			<li aria-current={page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
-				<a href="/sverdle">Sverdle</a>
+			<li aria-current={page.url.pathname === '/createaccount' ? 'page' : undefined}>
+				<a href="/createaccount">Create Account</a>
 			</li>
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -32,7 +30,7 @@
 	</nav>
 
 	<div class="corner">
-		<a href="https://github.com/sveltejs/kit">
+		<a href="https://github.com/etbay/BrainBatch">
 			<img src={github} alt="GitHub" />
 		</a>
 	</div>
@@ -41,11 +39,11 @@
 <style>
 	header {
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-evenly;
 	}
 
 	.corner {
-		width: 3em;
+		/* width: 3em; */
 		height: 3em;
 	}
 
@@ -55,12 +53,18 @@
 		justify-content: center;
 		width: 100%;
 		height: 100%;
+		padding-left: 1em;
 	}
 
 	.corner img {
 		width: 2em;
 		height: 2em;
 		object-fit: contain;
+	}
+
+	.corner h1 {
+		font-size: 1.5rem;
+		padding-left: 1em;
 	}
 
 	nav {

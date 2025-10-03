@@ -2,10 +2,11 @@
 Video Link: 
 ## What's New (User Facing)
  * Feature 1 or Bug Fix 1
- * Feature 2 or Bug Fix 2
+ * Users can navigate to the "Canvas" page and enter their Personal Access Token to load their current class names as they appear in Canvas
  * Feature n or Bug Fix n
 
 ## Work Summary (Developer Facing)
+During this sprint, our team learned new tools such as Svelte, Django, and postgresQL in order to manage data, make API calls, and provide a smooth web app experience. In order to make the Canvas API call, we had to communciate with the Canvas LMS API. We can use this to view enrolled courses and filter the courses based on access and view such as student, professor, or TA. In order to access the data, we needed the user to generate an access token through their Canvas settings. Having access through a secure login would be ideal but requires access granted by system admins at WSU. 
 Provide a one paragraph synposis of what your team accomplished this sprint. Don't repeat the "What's New" list of features. Instead, help the instructor understand how you went about the work described there, any barriers you overcame, and any significant learnings for your team.
 
 ## Unfinished Work
@@ -14,9 +15,10 @@ If applicable, explain the work you did not finish in this sprint. For issues/us
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
 
- * URL of issue 1
- * URL of issue 2
- * URL of issue n
+ * [URL of issue 1](https://github.com/etbay/BrainBatch/issues/13)
+ * [URL of issue 2](https://github.com/etbay/BrainBatch/issues/14)
+ * [URL of issue 3](https://github.com/etbay/BrainBatch/issues/7)
+ * [URL of issue 4](https://github.com/etbay/BrainBatch/issues/3)
 
  Desirables (Remove this section when you save the file):
   * Each issue should be assigned to a milestone
@@ -59,4 +61,5 @@ Here's what we'd like to improve:
 Here are changes we plan to implement in the next sprint:
    * Item 1
    * Item 2
+
    * Item x

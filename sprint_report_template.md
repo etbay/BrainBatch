@@ -54,7 +54,7 @@ Here's what went well:
   * Item x
  
 Here's what we'd like to improve:
-   * Item 1
+   * More active use of the Kanban board
    * Item 2
    * Item x
   
@@ -63,4 +63,5 @@ Here are changes we plan to implement in the next sprint:
    * Item 2
 
    * Item x
+
 

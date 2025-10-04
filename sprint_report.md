@@ -23,21 +23,14 @@ Here are links to the issues that we completed in this sprint:
  ## Incomplete Issues/User Stories
  Here are links to issues we worked on but did not complete in this sprint:
  
- * URL of issue 1 <<One sentence explanation of why issue was not completed>>
- * URL of issue 2 <<One sentence explanation of why issue was not completed>>
- * URL of issue n <<One sentence explanation of why issue was not completed>>
- 
- Examples of explanations (Remove this section when you save the file):
-  * "We ran into a complication we did not anticipate (explain briefly)." 
-  * "We decided that the feature did not add sufficient value for us to work on it in this sprint (explain briefly)."
-  * "We could not reproduce the bug" (explain briefly).
-  * "We did not get to this issue because..." (explain briefly)
+ * [URL of issue 1](https://github.com/etbay/BrainBatch/issues/13)
+ * Had to learn frameworks and API calls quickly for the sprint and ran out of time
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
- * [Name of code file 1](https://github.com/your_repo/file_extension)
- * [Name of code file 2](https://github.com/your_repo/file_extension)
- * [Name of code file 3](https://github.com/your_repo/file_extension)
+ * [views.py](https://github.com/etbay/BrainBatch/blob/canvas/backend/brainbatch_backend/brainbatch/views.py)
+ * [+page.svelte](https://github.com/etbay/BrainBatch/blob/homepage/frontend/src/routes/createaccount/%2Bpage.svelte)
+ * [app.html](https://github.com/etbay/BrainBatch/blob/Profile-settings/frontend/src/app.html)
  
 ## Retrospective Summary
 Here's what went well:
@@ -54,7 +47,3 @@ Here are changes we plan to implement in the next sprint:
    * Add group search feature (connected to Canvas)
    * Add chat feature 
    * Add group feature (display, storage)
-
-
-
-

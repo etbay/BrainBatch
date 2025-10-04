@@ -1,16 +1,16 @@
 # Sprint x Report 
 Video Link: 
 ## What's New (User Facing)
- * Feature 1 or Bug Fix 1
+ * Users can enter a username and password on the frontend
  * Users can navigate to the "Canvas" page and enter their Personal Access Token to load their current class names as they appear in Canvas
- * Feature n or Bug Fix n
+ * Users are able to enter a username and password and have it stored and retrieved on the backend
+ * Users have a profile that they are able to modify
 
 ## Work Summary (Developer Facing)
-During this sprint, our team learned new tools such as Svelte, Django, and postgresQL in order to manage data, make API calls, and provide a smooth web app experience. In order to make the canvas data call, we had to communciate with the Canvas LMS API. We used this to view enrolled courses and filter the courses based on access and enrollment status such as student, professor, or TA. In order to access the data, we need the user to generate an access token through their Canvas settings. Having access through a secure login would be ideal but requires access granted by system admins at WSU. 
-Provide a one paragraph synposis of what your team accomplished this sprint. Don't repeat the "What's New" list of features. Instead, help the instructor understand how you went about the work described there, any barriers you overcame, and any significant learnings for your team.
+During this sprint, our team learned new tools such as Svelte, Django, and postgresQL in order to manage data, make API calls, and provide a smooth web app experience. In order to make the canvas data call, we had to communciate with the Canvas LMS API. We used this to view enrolled courses and filter the courses based on access and enrollment status such as student, professor, or TA. In order to access the data, we need the user to generate an access token through their Canvas settings. Having access through a secure login would be ideal but requires access granted by system admins at WSU. We also created a frontend and backend for the username and password authentication feature which is essential for user profiles. The other feature completed was the ability for users to have and edit their user profile data such as a bio and name.
 
 ## Unfinished Work
-If applicable, explain the work you did not finish in this sprint. For issues/user stories in the current sprint that have not been closed, (a) any progress toward completion of the issues has been clearly tracked (by checking the checkboxes of  acceptance criteria), (b) a comment has been added to the issue to explain why the issue could not be completed (e.g., "we ran out of time" or "we did not anticipate it would be so much work"), and (c) the issue is added to a subsequent sprint, so that it can be addressed later.
+We did not finish integrating the frontend with the backend or any of the issues together. This was because we were sometimes stuck with some members having easy tasks and others having more difficult ones that required learning tools they were unfamiliar with. Another unfinished issue is the entering of access tokens in order to display canvas classes. These issues will be added to the next sprint and be completed earlier on with more check-ins. 
 
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
@@ -19,14 +19,6 @@ Here are links to the issues that we completed in this sprint:
  * [URL of issue 2](https://github.com/etbay/BrainBatch/issues/14)
  * [URL of issue 3](https://github.com/etbay/BrainBatch/issues/7)
  * [URL of issue 4](https://github.com/etbay/BrainBatch/issues/3)
-
- Desirables (Remove this section when you save the file):
-  * Each issue should be assigned to a milestone
-  * Each completed issue should be assigned to a pull request
-  * Each completed pull request should include a link to a "Before and After" video
-  * All team members who contributed to the issue should be assigned to it on GitHub
-  * Each issue should be assigned story points using a label
-  * Story points contribution of each team member should be indicated in a comment
  
  ## Incomplete Issues/User Stories
  Here are links to issues we worked on but did not complete in this sprint:
@@ -62,6 +54,7 @@ Here are changes we plan to implement in the next sprint:
    * Add group search feature (connected to Canvas)
    * Add chat feature 
    * Add group feature (display, storage)
+
 
 
 

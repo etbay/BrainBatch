@@ -49,19 +49,19 @@ Please review the following code files, which were actively developed during thi
  
 ## Retrospective Summary
 Here's what went well:
-  * Item 1
-  * Item 2
-  * Item x
+  * Interfacing with postgresQL with Python
+  * We were able to meet regularly
+  * Canvas LMS API has great documentation
  
 Here's what we'd like to improve:
    * More active use of the Kanban board
-   * Item 2
-   * Item x
+   * Better time management
+   * Do more code reviews
   
 Here are changes we plan to implement in the next sprint:
-   * Item 1
-   * Item 2
+   * Add group search feature (connected to Canvas)
+   * Add chat feature 
+   * Add group feature (display, storage)
 
-   * Item x
 
 

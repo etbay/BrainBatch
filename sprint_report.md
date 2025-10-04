@@ -1,5 +1,5 @@
 # Sprint x Report 
-Video Link: 
+Video Link: https://youtu.be/SvoAj_UoqiQ 
 ## What's New (User Facing)
  * Users can enter a username and password on the frontend
  * Users can navigate to the "Canvas" page and enter their Personal Access Token to load their current class names as they appear in Canvas
@@ -47,3 +47,4 @@ Here are changes we plan to implement in the next sprint:
    * Add group search feature (connected to Canvas)
    * Add chat feature 
    * Add group feature (display, storage)
+

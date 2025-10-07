@@ -65,11 +65,6 @@
 		object-fit: contain;
 	}
 
-	.corner h1 {
-		font-size: 1.5rem;
-		padding-left: 1em;
-	}
-
 	nav {
 		display: flex;
 		justify-content: center;

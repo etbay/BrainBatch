@@ -4,7 +4,7 @@
 </svelte:head>
 
 <script>
-    let accessToken = '10~MRReLxNZ7PnMfU86kUMWmHFLJe9cKJWE8Mh6V2u9ATwmmHkTXDUzFkTH2cnWYkY2';
+    let accessToken = '';
     let courses = [];
     let error = '';
 
@@ -28,6 +28,8 @@
 <div class="text-column" style = "text-align: center;">
 	<h1>Link Canvas account</h1>
 
+    <label for = "accessToken">Enter Canvas Access Token:</label>
+    <input style="width: auto;" type = "text" bind:value={accessToken}/><br/>
     <button style= "margin: 1rem 0; padding: 0.75rem 1.5rem; font-size: 1.1rem;"
 		on:click={linkCanvasAccount}>
 		Link Canvas Account

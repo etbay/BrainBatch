@@ -18,8 +18,9 @@ export const dictionary = {
 		"/about": [3],
 		"/createaccount": [4],
 		"/login": [5],
-		"/sverdle": [~6],
-		"/sverdle/how-to-play": [7]
+    "/canvas": [6],
+		"/sverdle": [~7],
+		"/sverdle/how-to-play": [8]
 	};
 
 export const hooks = {

@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from brainbatch import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/canvas/courses/', views.get_canvas_courses),
 ]

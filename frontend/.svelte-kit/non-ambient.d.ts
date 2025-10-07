@@ -27,18 +27,20 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/about" | "/canvas" | "/sverdle" | "/sverdle/how-to-play";
+		RouteId(): "/" | "/about" | "/createaccount" | "/login" | "/canvas" | "/sverdle" | "/sverdle/how-to-play";
 		RouteParams(): {
 			
 		};
 		LayoutParams(): {
 			"/": Record<string, never>;
 			"/about": Record<string, never>;
-			"/canvas": Record<string, never>;
+			"/createaccount": Record<string, never>;
+			"/login": Record<string, never>;
+      "/canvas": Record<string, never>;
 			"/sverdle": Record<string, never>;
 			"/sverdle/how-to-play": Record<string, never>
 		};
-		Pathname(): "/" | "/about" | "/about/" | "/canvas" | "/canvas/" | "/sverdle" | "/sverdle/" | "/sverdle/how-to-play" | "/sverdle/how-to-play/";
+		Pathname(): "/" | "/about" | "/about/" | "/createaccount" | "/createaccount/" | "/login" | "/login/" | "/canvas" | "/canvas" | "/sverdle" | "/sverdle/" | "/sverdle/how-to-play" | "/sverdle/how-to-play/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/favicon.svg" | "/robots.txt" | string & {};
 	}

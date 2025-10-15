@@ -39,13 +39,7 @@ declare module '$env/static/private' {
 	export const ComSpec: string;
 	export const DriverData: string;
 	export const EDITOR: string;
-	export const EFC_29480_1262719628: string;
-	export const EFC_29480_1592913036: string;
-	export const EFC_29480_2283032206: string;
-	export const EFC_29480_2775293581: string;
-	export const EFC_29480_3789132940: string;
-	export const FPS_BROWSER_APP_PROFILE_STRING: string;
-	export const FPS_BROWSER_USER_PROFILE_STRING: string;
+	export const EFC_9120_1592913036: string;
 	export const GHCUP_INSTALL_BASE_PREFIX: string;
 	export const GHCUP_MSYS2_ENV: string;
 	export const GIT_ASKPASS: string;
@@ -81,6 +75,7 @@ declare module '$env/static/private' {
 	export const npm_package_version: string;
 	export const NUMBER_OF_PROCESSORS: string;
 	export const OneDrive: string;
+	export const OneDriveCommercial: string;
 	export const OnlineServices: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const OS: string;
@@ -122,7 +117,6 @@ declare module '$env/static/private' {
 	export const VSCODE_INJECTION: string;
 	export const VSCODE_PYTHON_AUTOACTIVATE_GUARD: string;
 	export const windir: string;
-	export const __COMPAT_LAYER: string;
 }
 
 /**
@@ -165,13 +159,7 @@ declare module '$env/dynamic/private' {
 		ComSpec: string;
 		DriverData: string;
 		EDITOR: string;
-		EFC_29480_1262719628: string;
-		EFC_29480_1592913036: string;
-		EFC_29480_2283032206: string;
-		EFC_29480_2775293581: string;
-		EFC_29480_3789132940: string;
-		FPS_BROWSER_APP_PROFILE_STRING: string;
-		FPS_BROWSER_USER_PROFILE_STRING: string;
+		EFC_9120_1592913036: string;
 		GHCUP_INSTALL_BASE_PREFIX: string;
 		GHCUP_MSYS2_ENV: string;
 		GIT_ASKPASS: string;
@@ -207,6 +195,7 @@ declare module '$env/dynamic/private' {
 		npm_package_version: string;
 		NUMBER_OF_PROCESSORS: string;
 		OneDrive: string;
+		OneDriveCommercial: string;
 		OnlineServices: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		OS: string;
@@ -248,7 +237,6 @@ declare module '$env/dynamic/private' {
 		VSCODE_INJECTION: string;
 		VSCODE_PYTHON_AUTOACTIVATE_GUARD: string;
 		windir: string;
-		__COMPAT_LAYER: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

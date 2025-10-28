@@ -1,28 +1,67 @@
+<script>
+    import { goto } from '$app/navigation';
+    const BACKEND = 'http://localhost:8000';
+
+    let username = '';
+    let displayname = '';
+    let email = '';
+    let password = '';
+    let error = '';
+    let loading = false;
+
+    async function onSubmit(e) {
+        e.preventDefault();
+        error = '';
+        loading = true;
+        try {
+            const res = await fetch(`${BACKEND}/api/auth/register/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username,
+                    password,
+                    email,
+                    display_name: displayname
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Registration failed');
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            goto('/profile');
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        }
+    }
+</script>
+
 <div class="login-container">
     <h1>Create a BrainBatch account</h1>
     <p>Already have an account? <a href="/login">Log in!</a></p>
-    <form>
+    <form on:submit|preventDefault={onSubmit}>
         <div class="form-field">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" pattern="\w&#123;3,24&#125;" required>
+            <label for="username">Username</label>
+            <input id="username" type="text" bind:value={username} required />
             <small>A 3 to 24 character name unique to your account. Can contain letters, numbers, and underscores.</small>
         </div>
         <div class="form-field">
-            <label for="displayname">Display name:</label>
-            <input type="text" name="displayname" id="displayname">
-            <small>Should be your real name or something others can identify you with.</small>
+            <label for="displayname">Display name</label>
+            <input id="displayname" type="text" bind:value={displayname} />
         </div>
         <div class="form-field">
-            <label for="email">Email address:</label>
-            <input type="email" name="email" id="email">
+            <label for="email">Email</label>
+            <input id="email" type="email" bind:value={email} />
             <small>BrainBatch can send you notifications via email.</small>
         </div>
         <div class="form-field">
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" minlength="8" maxlength="2048" required>
+            <label for="password">Password</label>
+            <input id="password" type="password" bind:value={password} minlength="8" required />
             <small>Passwords must be at least 8 characters long. A strong password contains an unpredictable sequence of letters, numbers, and symbols.</small>
         </div>
-        <input type="submit" value="Create account">
+        {#if error}<p style="color:red">{error}</p>{/if}
+        <input type="submit" value={loading ? "Creating..." : "Create account"} disabled={loading} />
     </form>
 </div>
 

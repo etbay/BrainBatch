@@ -1,11 +1,4 @@
-<svelte:head>
-	<title>Profile</title>
-	<meta name="description" content="User Profile" />
-</svelte:head>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<div class="container">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyConnect - Profile Settings</title>
@@ -494,7 +487,8 @@
             }
         }
     </style>
-</head>
+</div>
+
 <body>
     <div class="container">
         <header>
@@ -503,10 +497,10 @@
                 <span>StudyConnect</span>
             </div>
             <nav class="nav-links">
-                <a href="#"><i class="fas fa-home"></i> Dashboard</a>
-                <a href="#"><i class="fas fa-user-friends"></i> Groups</a>
-                <a href="#"><i class="fas fa-comments"></i> Messages</a>
-                <a href="#" class="active"><i class="fas fa-user"></i> Profile</a>
+                <a href="/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="/groups"><i class="fas fa-user-friends"></i> Groups</a>
+                <a href="/messages"><i class="fas fa-comments"></i> Messages</a>
+                <a href="/profile" class="active"><i class="fas fa-user"></i> Profile</a>
             </nav>
         </header>
         
@@ -516,16 +510,16 @@
                     <div class="cover-photo"></div>
                     <div class="profile-info">
                         <div class="profile-picture-container">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Profile Picture" class="profile-picture" id="profilePicture">
-                            <button class="change-avatar-btn" id="changeAvatarBtn">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Profile" class="profile-picture" id="profilePicture">
+                            <button class="change-avatar-btn" id="changeAvatarBtn" aria-label="Change profile picture">
                                 <i class="fas fa-camera"></i>
                             </button>
                         </div>
                         
                         <div class="avatar-options" id="avatarOptions" style="display: none;">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Avatar 1" class="avatar-option" data-avatar="1">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Avatar 2" class="avatar-option" data-avatar="2">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Avatar 3" class="avatar-option" data-avatar="3">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="1" class="avatar-option" data-avatar="1">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="2" class="avatar-option" data-avatar="2">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="3" class="avatar-option" data-avatar="3">
                         </div>
                         
                         <h2 class="profile-name" id="profileName">Alex Johnson</h2>
@@ -550,23 +544,23 @@
                 
                 <!-- Facebook-style navigation -->
                 <div class="sidebar-nav">
-                    <a href="#" class="nav-item active">
+                    <a href="/profile" class="nav-item active">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="/profile/photos" class="nav-item">
                         <i class="fas fa-photo-video"></i>
                         <span>Photos</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="/profile/groups" class="nav-item">
                         <i class="fas fa-users"></i>
                         <span>Study Groups</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="/profile/events" class="nav-item">
                         <i class="fas fa-calendar-alt"></i>
                         <span>Events</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="/profile/courses" class="nav-item">
                         <i class="fas fa-book"></i>
                         <span>Courses</span>
                     </a>
@@ -660,7 +654,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Current Courses</label>
+                        <label for="newCourse">Current Courses</label>
                         <div class="courses-list" id="coursesList">
                             <div class="course-tag">CS229: Machine Learning <span>&times;</span></div>
                             <div class="course-tag">CS161: Algorithms <span>&times;</span></div>
@@ -865,4 +859,3 @@
         });
     </script>
 </body>
-</html>

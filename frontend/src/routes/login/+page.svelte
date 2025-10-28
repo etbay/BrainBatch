@@ -1,16 +1,49 @@
+<script>
+    import { goto } from '$app/navigation';
+    const BACKEND = 'http://localhost:8000';
+
+    let username = '';
+    let password = '';
+    let error = '';
+    let loading = false;
+
+    async function onSubmit(e) {
+        e.preventDefault();
+        error = '';
+        loading = true;
+        try {
+            const res = await fetch(`${BACKEND}/api/auth/login/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Login failed');
+            localStorage.setItem('authToken', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            goto('/profile');
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        }
+    }
+</script>
+
 <div class="login-container">
     <h1>Log in to BrainBatch</h1>
     <p>Don't have an account yet? <a href="/createaccount">Create one!</a></p>
-    <form>
+    <form on:submit|preventDefault={onSubmit}>
         <div class="form-field">
             <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
+            <input id="username" type="text" bind:value={username} required />
         </div>
         <div class="form-field">
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+            <input id="password" type="password" bind:value={password} required />
         </div>
-        <input type="submit" value="Log in">
+        {#if error}<p style="color:red">{error}</p>{/if}
+        <input type="submit" value={loading ? "Logging in..." : "Log in"} disabled={loading} />
     </form>
 </div>
 

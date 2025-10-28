@@ -21,4 +21,7 @@ from brainbatch import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/canvas/courses/', views.get_canvas_courses),
+    path("api/auth/register/", views.register),
+    path("api/auth/login/", views.login),
+    path("api/auth/me/", views.me),
 ]

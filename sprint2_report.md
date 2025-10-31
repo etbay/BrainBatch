@@ -20,7 +20,7 @@ Here are links to the issues that we completed in this sprint:
  Here are links to issues we worked on but did not complete in this sprint:
  
  * [Search and join group (gs, Timeline: 10/26/25-now, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/28) - Not completed since we focused more on creation, authentication, and chat messaging for groups and ran out of time. Although this has somewhat been implemented, there is still some more work on it to be done.
- * [Link frontend and backend account system (lfb, Timeline: 10/3/25-now, Effort: High)](https://github.com/etbay/BrainBatch/issues/17) - Not completed since we were unable to understand how to fully utilize flask.
+ * [Link frontend and backend system (lfb, Timeline: 10/3/25-now, Effort: High)](https://github.com/etbay/BrainBatch/issues/17) - Not completed since we were unable to understand how to fully utilize flask.
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
@@ -41,5 +41,6 @@ Here are changes we plan to implement in the next sprint:
    * More fully complete user UI.
    * Proper Flask implementation with Python for backend API.
    * Hosting of site on Digital Ocean.
+
 
 

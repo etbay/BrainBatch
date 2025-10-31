@@ -34,12 +34,6 @@ Here are links to the issues that we completed in this sprint:
  Here are links to issues we worked on but did not complete in this sprint:
  
  * [Search and join group](https://github.com/etbay/BrainBatch/issues/28) - Not completed since we focused more on creation, authentication, and chat messaging for groups and ran out of time
- 
- Examples of explanations (Remove this section when you save the file):
-  * "We ran into a complication we did not anticipate (explain briefly)." 
-  * "We decided that the feature did not add sufficient value for us to work on it in this sprint (explain briefly)."
-  * "We could not reproduce the bug" (explain briefly).
-  * "We did not get to this issue because..." (explain briefly)
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
@@ -49,12 +43,12 @@ Please review the following code files, which were actively developed during thi
  
 ## Retrospective Summary
 Here's what went well:
-  * Item 1
-  * Item 2
+  * We made a lot of progress towards some of the main features of our app
+  * We were able to discuss and plan how we can use CI/CD and Docker for the future since we learned it in class
   * Item x
  
 Here's what we'd like to improve:
-   * Item 1
+   * Working more consistently during the weeks (hopefully we'll be good since there'll be less exams)
    * Item 2
    * Item x
   
@@ -62,6 +56,7 @@ Here are changes we plan to implement in the next sprint:
    * Item 1
    * Item 2
    * Item x
+
 
 
 

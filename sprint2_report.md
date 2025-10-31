@@ -15,8 +15,12 @@ If applicable, explain the work you did not finish in this sprint. For issues/us
 Here are links to the issues that we completed in this sprint:
 
  * [Save user settings to database](https://github.com/etbay/BrainBatch/issues/26)
- * URL of issue 2
- * URL of issue n
+ * [Chat messaging system](https://github.com/etbay/BrainBatch/issues/2)
+ * [Create and store group](https://github.com/etbay/BrainBatch/issues/27)
+ * [Enter canvas access token](https://github.com/etbay/BrainBatch/issues/16)
+ * [Link frontend and backend account system](https://github.com/etbay/BrainBatch/issues/17)
+ * [Group creation page](https://github.com/etbay/BrainBatch/issues/5)
+ * [Classroom selection page](https://github.com/etbay/BrainBatch/issues/6)
 
  Desirables (Remove this section when you save the file):
   * Each issue should be assigned to a milestone
@@ -29,9 +33,7 @@ Here are links to the issues that we completed in this sprint:
  ## Incomplete Issues/User Stories
  Here are links to issues we worked on but did not complete in this sprint:
  
- * URL of issue 1 <<One sentence explanation of why issue was not completed>>
- * URL of issue 2 <<One sentence explanation of why issue was not completed>>
- * URL of issue n <<One sentence explanation of why issue was not completed>>
+ * [Search and join group](https://github.com/etbay/BrainBatch/issues/28) - Not completed since we focused more on creation, authentication, and chat messaging for groups and ran out of time
  
  Examples of explanations (Remove this section when you save the file):
   * "We ran into a complication we did not anticipate (explain briefly)." 
@@ -60,5 +62,6 @@ Here are changes we plan to implement in the next sprint:
    * Item 1
    * Item 2
    * Item x
+
 
 

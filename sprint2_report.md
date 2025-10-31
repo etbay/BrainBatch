@@ -14,7 +14,7 @@ If applicable, explain the work you did not finish in this sprint. For issues/us
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
 
- * Save user settings to database
+ * [Save user settings to database](https://github.com/etbay/BrainBatch/issues/26)
  * URL of issue 2
  * URL of issue n
 
@@ -60,4 +60,5 @@ Here are changes we plan to implement in the next sprint:
    * Item 1
    * Item 2
    * Item x
+
 

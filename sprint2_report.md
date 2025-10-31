@@ -15,7 +15,6 @@ Here are links to the issues that we completed in this sprint:
 
  * [Chat messaging system (gch, Timline: 10/30/25-10/30/25, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/2)
  * [Create and store group (gcr, Timline: 10/29/25-10/30/25, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/27)
- * [Group creation page (gcp, Timline: 10/23/25-10/30/25, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/5)
  
  ## Incomplete Issues/User Stories
  Here are links to issues we worked on but did not complete in this sprint:
@@ -42,3 +41,4 @@ Here are changes we plan to implement in the next sprint:
    * More fully complete user UI.
    * Proper Flask implementation with Python for backend API.
    * Hosting of site on Digital Ocean.
+

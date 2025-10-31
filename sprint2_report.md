@@ -3,7 +3,6 @@ Video Link:
 ## What's New (User Facing)
  * Users can create study groups
  * Users can access a study group and send messages
- * Users can create an account and login
 
 ## Work Summary (Developer Facing)
 This sprint we focused on group creation and chatting. We mainly spent time attempting to learn about how to setup Supabase, Digital Ocean, and Flask. We were able to successfully setup and use Supabase, alongside create a Digital Ocean account. Flask has been looked into, however nothing major has been done with it yet. Overall, we have established a foundation in for the server side logic and UI to further expand upon in sprint 3.
@@ -14,11 +13,9 @@ We did not finish the group search and join functionality. This sprint, we were 
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
 
- * [Save user settings to database](https://github.com/etbay/BrainBatch/issues/26)
- * [Chat messaging system](https://github.com/etbay/BrainBatch/issues/2)
- * [Create and store group](https://github.com/etbay/BrainBatch/issues/27)
- * [Enter canvas access token](https://github.com/etbay/BrainBatch/issues/16)
- * [Link frontend and backend account system](https://github.com/etbay/BrainBatch/issues/17)
+ * [Save user settings to database (us)](https://github.com/etbay/BrainBatch/issues/26)
+ * [Chat messaging system (gch)](https://github.com/etbay/BrainBatch/issues/2)
+ * [Create and store group (gcr)](https://github.com/etbay/BrainBatch/issues/27)
  * [Group creation page](https://github.com/etbay/BrainBatch/issues/5)
 
  Desirables (Remove this section when you save the file):
@@ -55,3 +52,4 @@ Here are changes we plan to implement in the next sprint:
    * More fully complete user UI.
    * Proper Flask implementation with Python for backend API.
    * Hosting of site on Digital Ocean.
+

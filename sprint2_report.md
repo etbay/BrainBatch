@@ -13,29 +13,19 @@ We did not finish the group search and join functionality. This sprint, we were 
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
 
- * [Save user settings to database (us)](https://github.com/etbay/BrainBatch/issues/26)
- * [Chat messaging system (gch)](https://github.com/etbay/BrainBatch/issues/2)
- * [Create and store group (gcr)](https://github.com/etbay/BrainBatch/issues/27)
- * [Group creation page](https://github.com/etbay/BrainBatch/issues/5)
-
- Desirables (Remove this section when you save the file):
-  * Each issue should be assigned to a milestone
-  * Each completed issue should be assigned to a pull request
-  * Each completed pull request should include a link to a "Before and After" video
-  * All team members who contributed to the issue should be assigned to it on GitHub
-  * Each issue should be assigned story points using a label
-  * Story points contribution of each team member should be indicated in a comment
+ * [Chat messaging system (gch, Timline: 10/30/25-10/30/25, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/2)
+ * [Create and store group (gcr, Timline: 10/29/25-10/30/25, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/27)
+ * [Group creation page (gcp, Timline: 10/23/25-10/30/25, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/5)
  
  ## Incomplete Issues/User Stories
  Here are links to issues we worked on but did not complete in this sprint:
  
- * [Search and join group](https://github.com/etbay/BrainBatch/issues/28) - Not completed since we focused more on creation, authentication, and chat messaging for groups and ran out of time
+ * [Search and join group (gs, Timeline: 10/26/25-now, Effort: Moderate)](https://github.com/etbay/BrainBatch/issues/28) - Not completed since we focused more on creation, authentication, and chat messaging for groups and ran out of time
+ * [Link frontend and backend account system (lfb, Timeline: 10/3/25-now, Effort: High)](https://github.com/etbay/BrainBatch/issues/17) - Not completed since we were unable to understand how to fully utilize flask.
 
 ## Code Files for Review
 Please review the following code files, which were actively developed during this sprint, for quality:
- * [Name of code file 1](https://github.com/your_repo/file_extension)
- * [Name of code file 2](https://github.com/your_repo/file_extension)
- * [Name of code file 3](https://github.com/your_repo/file_extension)
+No files currently under review.
  
 ## Retrospective Summary
 Here's what went well:
@@ -52,4 +42,3 @@ Here are changes we plan to implement in the next sprint:
    * More fully complete user UI.
    * Proper Flask implementation with Python for backend API.
    * Hosting of site on Digital Ocean.
-

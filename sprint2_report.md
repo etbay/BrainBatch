@@ -1,15 +1,15 @@
 # Sprint x Report 
 Video Link: 
 ## What's New (User Facing)
- * Feature 1 or Bug Fix 1
- * Feature 2 or Bug Fix 2
- * Feature n or Bug Fix n
+ * Users can create study groups
+ * Users can access a study group and send messages
+ * Users can create an account and login
 
 ## Work Summary (Developer Facing)
-Provide a one paragraph synposis of what your team accomplished this sprint. Don't repeat the "What's New" list of features. Instead, help the instructor understand how you went about the work described there, any barriers you overcame, and any significant learnings for your team.
+This sprint, we were tasked with making groups that users could access based on an ID. We also had to allow users to enter a group and send a message which showed who sent it, when it was sent, and the contents of the message. We also needed to handle how to load the messages of a group chat when the group was entered. 
 
 ## Unfinished Work
-If applicable, explain the work you did not finish in this sprint. For issues/user stories in the current sprint that have not been closed, (a) any progress toward completion of the issues has been clearly tracked (by checking the checkboxes of  acceptance criteria), (b) a comment has been added to the issue to explain why the issue could not be completed (e.g., "we ran out of time" or "we did not anticipate it would be so much work"), and (c) the issue is added to a subsequent sprint, so that it can be addressed later.
+We did not finish the group search and join functionality. This sprint, we were mainly focused on allowing users to create groups, access groups, and send messages, but we were unable to get a search and join due to time constraints. Related to this, we also weren't able to have users access groups based on their classes listed in canvas. This will be implemented while we implement the search and join feature.
 
 ## Completed Issues/User Stories
 Here are links to the issues that we completed in this sprint:
@@ -20,7 +20,6 @@ Here are links to the issues that we completed in this sprint:
  * [Enter canvas access token](https://github.com/etbay/BrainBatch/issues/16)
  * [Link frontend and backend account system](https://github.com/etbay/BrainBatch/issues/17)
  * [Group creation page](https://github.com/etbay/BrainBatch/issues/5)
- * [Classroom selection page](https://github.com/etbay/BrainBatch/issues/6)
 
  Desirables (Remove this section when you save the file):
   * Each issue should be assigned to a milestone
@@ -56,6 +55,7 @@ Here are changes we plan to implement in the next sprint:
    * Item 1
    * Item 2
    * Item x
+
 
 
 

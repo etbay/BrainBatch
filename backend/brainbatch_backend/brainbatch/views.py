@@ -9,14 +9,83 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from django.db.models import Count
+from .models import Group, GroupMembership, Message
+from .serializers import GroupSerializer, MessageSerializer
 
 def user_payload(user):
     return {
         "id": user.id,
         "username": user.username,
-        "email": user.email or "",
-        "display_name": user.first_name or "",
+        "email": getattr(user, "email", "") or "",
+        "display_name": getattr(user, "first_name", "") or "",
     }
+
+@api_view(["GET", "POST"])
+def groups(request):
+    if request.method == "GET":
+        qs = Group.objects.filter(memberships__user=request.user).annotate(member_count=Count("memberships"))
+        return Response(GroupSerializer(qs, many=True).data)
+    name = (request.data.get("name") or "").strip()
+    if not name:
+        return Response({"error": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
+    g = Group.objects.create(name=name, created_by=request.user)
+    GroupMembership.objects.create(user=request.user, group=g, role="owner")
+    g.member_count = 1
+    return Response(GroupSerializer(g).data, status=status.HTTP_201_CREATED)
+
+def _require_membership(request, group_id):
+    try:
+        group = Group.objects.annotate(member_count=Count("memberships")).get(id=group_id)
+    except Group.DoesNotExist:
+        return None, Response({"error": "group not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not GroupMembership.objects.filter(group=group, user=request.user).exists():
+        return None, Response({"error": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
+    return group, None
+
+@api_view(["GET"])
+def group_detail(request, group_id: int):
+    group, error = _require_membership(request, group_id)
+    if error:
+        return error
+    return Response(GroupSerializer(group).data)
+
+@api_view(["GET", "POST"])
+def group_messages(request, group_id: int):
+    group, error = _require_membership(request, group_id)
+    if error:
+        return error
+
+    if request.method == "POST":
+        content = (request.data.get("content") or "").strip()
+        if not content:
+            return Response({"error": "content is required"}, status=status.HTTP_400_BAD_REQUEST)
+        msg = Message.objects.create(group=group, user=request.user, content=content)
+        return Response(MessageSerializer(msg).data, status=status.HTTP_201_CREATED)
+
+    # GET: backscroll with ?before=<message_id>&limit=25
+    try:
+        limit = min(int(request.GET.get("limit", 20)), 100)
+    except ValueError:
+        limit = 20
+    before = request.GET.get("before")
+    qs = Message.objects.filter(group=group)
+    if before:
+        try:
+            qs = qs.filter(id__lt=int(before))
+        except ValueError:
+            pass
+    page_instances = list(qs.order_by("-id")[:limit])
+    page_instances.reverse()  # return ascending for display
+    data = MessageSerializer(page_instances, many=True).data
+    if page_instances:
+        first_id = page_instances[0].id
+        has_more = Message.objects.filter(group=group, id__lt=first_id).exists()
+        next_before = first_id
+    else:
+        has_more = False
+        next_before = None
+    return Response({"messages": data, "next_before": next_before, "has_more": has_more})
 
 @api_view(["POST"])
 @permission_classes([AllowAny])

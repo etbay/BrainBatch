@@ -14,7 +14,7 @@
 
 	<footer>
 		<p>
-			visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to learn about SvelteKit
+			<a href="https://github.com/etbay/BrainBatch">BrainBatch</a>
 		</p>
 	</footer>
 </div>
@@ -43,10 +43,13 @@
 		justify-content: center;
 		align-items: center;
 		padding: 12px;
+
+		color: #1877f2;
 	}
 
 	footer a {
 		font-weight: bold;
+		color: #1877f2;
 	}
 
 	@media (min-width: 480px) {

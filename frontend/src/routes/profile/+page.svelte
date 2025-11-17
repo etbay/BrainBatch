@@ -494,7 +494,7 @@
         <header>
             <div class="logo">
                 <i class="fas fa-users"></i>
-                <span>StudyConnect</span>
+                <span>BrainBatch</span>
             </div>
             <nav class="nav-links">
                 <a href="/dashboard"><i class="fas fa-home"></i> Dashboard</a>

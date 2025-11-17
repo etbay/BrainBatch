@@ -24,4 +24,7 @@ urlpatterns = [
     path("api/auth/register/", views.register),
     path("api/auth/login/", views.login),
     path("api/auth/me/", views.me),
+    path("api/groups/", views.groups),
+    path("api/groups/<int:group_id>/", views.group_detail),
+    path("api/groups/<int:group_id>/messages/", views.group_messages),
 ]

@@ -1,0 +1,7 @@
+Simply run the docker-compose.yaml file to build and run the backend alongside the frontend containers:
+docker-compose -f docker-compose.yaml up
+
+Note that the links listed will not lead anywhere. Instead,
+type in http://localhost:5000/ (backend) or http://localhost:3000/ (frontend) in the browser to access the containers.
+
+Also, for code changes to be seen, the command will need to be rerun so that the changes can be seen.

@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  brain-batch-backend:
+    container_name: brain-batch-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 0.0.0.0:5000:5000
+    volumes:
+      - ./backend:/app
+    networks:
+      - brain-batch-net
+  
+  brain-batch-frontend:
+    container_name: brain-batch-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 0.0.0.0:3000:3000
+    networks:
+      - brain-batch-net
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/static:/app/static
+    depends_on:
+      - brain-batch-backend
+
+networks:
+  brain-batch-net:
+    driver: bridge

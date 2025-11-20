@@ -1,5 +1,5 @@
 <div class="login-container">
-    <h1>Log in to BrainBatch</h1>
+    <h1>Log in to BrainBatch.</h1>
     <p>Don't have an account yet? <a href="/createaccount">Create one!</a></p>
     <form>
         <div class="form-field">
@@ -10,7 +10,7 @@
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
         </div>
-        <input type="submit" value="Log in">
+        <button>Log In</button>
     </form>
 </div>
 

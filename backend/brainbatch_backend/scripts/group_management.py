@@ -9,6 +9,11 @@ from misc_utils import *
 group_bp = quart.Blueprint('groups', __name__, url_prefix='/groups')
 
 
+"""Note that a full group object is a row of data from the group_data table.
+To see the columns/elements of said row/object, go onto the supabase Brain Batch project.
+"""
+
+
 def chat_area_base(name: str) -> dict:
     return {
         "name": name,
@@ -18,33 +23,55 @@ def chat_area_base(name: str) -> dict:
 
 @group_bp.route("/get_group", methods=["POST", "OPTIONS"])
 async def get_group_full() -> quart.Response | tuple:
-    return await request_shell(get_group)
+    """Gets the group of the specified id. Use "id" to specify the group id.
+    Returns a full group object.
+    """
+    return await request_shell(_get_group)
 
 
-async def get_group(client, data) -> quart.Response | tuple:
+async def _get_group(client, data) -> quart.Response | tuple:
     return await client.table("group_data").select("*").eq("id", data["id"]).execute()
 
 
 @group_bp.route("/new_group", methods=["POST", "OPTIONS"])
 async def create_group_full() -> quart.Response | tuple:
-    return await request_shell(create_group)
+    """Create the group of the specified name. Use "group_name" to specify the group's name,
+    and "creator_id" to specify the group creator's id. Returns a full group object.
+    """
+    return await request_shell(_create_group)
 
 
-async def create_group(client, data) -> quart.Response | tuple:
+async def _create_group(client, data) -> quart.Response | tuple:
     return await client.table("group_data").insert({
         "name": data["group_name"],
         "moderators": [data["creator_id"]],
         "members": [],
+        "tags": [],
         "chat_areas": [chat_area_base("General")]
     }).execute()
 
 
+@group_bp.route("/group_search", methods=["POST", "OPTIONS"])
+async def group_search_full() -> quart.Response | tuple:
+    """Searches for the group that has the specified prefix in its name.
+    Use "search_text" to specify the prefix to search for. Returns a full group object.
+    """
+    return await request_shell(_group_search)
+
+
+async def _group_search(client: supabase.Client, data: dict) -> quart.Response:
+    return await client.rpc("group_search", {"prefix": data["search_text"]}).execute()
+
+
 @group_bp.route("/add_member", methods=["POST", "OPTIONS"])
 async def add_member_full() -> quart.Response | tuple:
-    return await request_shell(add_member)
+    """Adds a member to the specified group. Use "group_id" to specify the group,
+    and "user_id" to specify the user to add. Returns a full group object.
+    """
+    return await request_shell(_add_member)
 
 
-async def add_member(client, data) -> quart.Response | tuple:
+async def _add_member(client, data) -> quart.Response | tuple:
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     group_data: dict = response.data[0]
     members: list = group_data["members"]
@@ -66,10 +93,13 @@ async def add_member(client, data) -> quart.Response | tuple:
 
 @group_bp.route("/remove_member", methods=["POST", "OPTIONS"])
 async def remove_member_full() -> quart.Response | tuple:
-    return await request_shell(remove_member)
+    """Removes a member from the specified group. Use "group_id" to specify the group,
+    and "user_id" to specify the user to remove. Returns a full group object.
+    """
+    return await request_shell(_remove_member)
 
 
-async def remove_member(client, data):
+async def _remove_member(client, data):
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     group_data: dict = response.data[0]
     members: list = group_data["members"]
@@ -86,10 +116,13 @@ async def remove_member(client, data):
 
 @group_bp.route("/add_moderator", methods=["POST", "OPTIONS"])
 async def add_moderator_full() -> quart.Response | tuple:
-    return await request_shell(add_moderator)
+    """Adds a moderator to the specified group. Use "group_id" to specify the group,
+    and "user_id" to specify the user to add. Returns a full group object.
+    """
+    return await request_shell(_add_moderator)
 
 
-async def add_moderator(client, data):
+async def _add_moderator(client, data):
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     group_data: dict = response.data[0]
     members: list = group_data["members"]
@@ -111,10 +144,13 @@ async def add_moderator(client, data):
 
 @group_bp.route("/remove_moderator", methods=["POST", "OPTIONS"])
 async def remove_moderator() -> quart.Response | tuple:
-    return await request_shell(remove_moderator)
+    """Removes a moderator from the specified group. Use "group_id" to specify the group,
+    and "user_id" to specify the user to removes. Returns a full group object.
+    """
+    return await request_shell(_remove_moderator)
 
 
-async def remove_moderator(client, data):
+async def _remove_moderator(client, data):
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     group_data: dict = response.data[0]
     moderators: list = group_data["moderators"]
@@ -131,10 +167,13 @@ async def remove_moderator(client, data):
 
 @group_bp.route("/add_chat_area", methods=["POST", "OPTIONS"])
 async def add_chat_area_full() -> quart.Response | tuple:
-    return await request_shell(add_chat_area)
+    """Adds a chat area to the specified group. Use "group_id" to specify the group,
+    and "chat_area_name" to specify the area to add. Returns a full group object.
+    """
+    return await request_shell(_add_chat_area)
 
 
-async def add_chat_area(client, data) -> quart.Response | tuple:
+async def _add_chat_area(client, data) -> quart.Response | tuple:
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     chat_areas: list[dict] = response.data[0]["chat_areas"]
 
@@ -150,10 +189,13 @@ async def add_chat_area(client, data) -> quart.Response | tuple:
 
 @group_bp.route("/remove_chat_area", methods=["POST", "OPTIONS"])
 async def remove_chat_area_full() -> quart.Response | tuple:
-    return await request_shell(remove_chat_area)
+    """Removes a chat area from the specified group. Use "group_id" to specify the group,
+    and "chat_area_name" to specify the area to remove. Returns a full group object.
+    """
+    return await request_shell(_remove_chat_area)
 
 
-async def remove_chat_area(client, data) -> quart.Response | tuple:
+async def _remove_chat_area(client, data) -> quart.Response | tuple:
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     chat_areas: list[dict] = response.data[0]["chat_areas"]
     area_missing = True
@@ -176,6 +218,10 @@ async def remove_chat_area(client, data) -> quart.Response | tuple:
 
 @group_bp.route("/send_message", methods=["POST", "OPTIONS"])
 async def send_message_full() -> quart.Response | tuple:
+    """Sends a message in the specified group and chat area. Use "group_id" to specify the group,
+    "chat_area_name" to specify the area to send it in, "sender_id" to specify the user sending it,
+    and "message" to specify the message to send. Returns a full group object.
+    """
     return await request_shell(send_message)
 
 
@@ -204,10 +250,13 @@ async def send_message(client, data) -> quart.Response | tuple:
 
 @group_bp.route("/delete_message", methods=["POST", "OPTIONS"])
 async def delete_message_full() -> quart.Response | tuple:
-    return await request_shell(delete_message)
+    """Deletes a message in the specified group and chat area. Use "group_id" to specify the group,
+    "chat_area_name" to specify the area to remove it from, and "message_index" to specify the message to delete.
+    """
+    return await request_shell(_delete_message)
 
 
-async def delete_message(client, data) -> quart.Response | tuple:
+async def _delete_message(client, data) -> quart.Response | tuple:
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     chat_areas: list[dict] = response.data[0]["chat_areas"]
     area_missing = True

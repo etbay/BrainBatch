@@ -1,9 +1,9 @@
 import requests
 
 def test_app():
-    response = requests.post('http://127.0.0.1:5000/groups/remove_moderator', json={
-        'group_id': 'd42d18f5-3891-4072-b73e-c2f0934932de',
-        'user_id': '68512da7-c760-4ab6-8491-72819e02adf7'
+    response = requests.post('http://127.0.0.1:5000/groups/new_group', json={
+        'group_name': 'Foobar',
+        'creator_id': '400f395c-fc85-45d4-a884-883d33d18291'
     })
     print(response.text)
 

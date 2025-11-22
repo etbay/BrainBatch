@@ -1,3 +1,22 @@
+<script>
+    import { onMount } from "svelte";
+    
+    async function foo()
+    {
+        console.log("Hello");
+
+        const userId = "400f395c-fc85-45d4-a884-883d33d18291";
+        const res = await fetch("http://localhost:5000/users/get_user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: userId })
+        });
+
+        const result = await res.json()
+        console.log(result);
+    }
+</script>
+
 <div class="login-container">
     <h1>Log in to BrainBatch</h1>
     <p>Don't have an account yet? <a href="/createaccount">Create one!</a></p>
@@ -10,7 +29,11 @@
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
         </div>
+<<<<<<< Updated upstream
         <input type="submit" value="Log in">
+=======
+        <button onclick={foo}>Log In</button>
+>>>>>>> Stashed changes
     </form>
 </div>
 

@@ -10,21 +10,36 @@ from misc_utils import *
 user_bp = quart.Blueprint('users', __name__, url_prefix='/users')
 
 
+<<<<<<< Updated upstream:backend/brainbatch_backend/scripts/user_management.py
+=======
+"""Note that a full user object is a row of data from the user_data table.
+To see the columns/elements of said row/object, go onto the supabase Brain Batch project.
+"""
+
+
+>>>>>>> Stashed changes:backend/scripts/user_management.py
 @user_bp.route("/get_user", methods=["POST", "OPTIONS"])
 async def get_user_full() -> quart.Response | tuple:
-    return await request_shell(get_user)
+    """Gets the user of the specified id. Use "id" to specify the user id.
+    Returns a full user object.
+    """
+    return await request_shell(_get_user)
 
 
-async def get_user(client, data) -> quart.Response | tuple:
+async def _get_user(client, data) -> quart.Response | tuple:
     return await client.table("user_data").select("*").eq("id", data["id"]).execute()
 
 
 @user_bp.route("/login", methods=["POST", "OPTIONS"])
 async def authenticate_user_full() -> tuple:
-    return await request_shell(authenticate_user, config_user_response)
+    """Authenticates a user with their email and passsword.
+    Use "email" to specify the email, and "password" to specify the password.
+    Returns a user id.
+    """
+    return await request_shell(_authenticate_user, config_user_response)
 
 
-async def authenticate_user(client, data):
+async def _authenticate_user(client, data):
     response = await client.auth.sign_in_with_password({
         "email": data["email"],
         "password": data["password"]
@@ -35,10 +50,14 @@ async def authenticate_user(client, data):
 
 @user_bp.route("/new_user", methods=["POST", "OPTIONS"])
 async def create_user_full() -> dict | int:
-    return await request_shell(create_user, config_user_response)
+    """Creates a brand new user. Use "email" to specify the user email,
+    "username" to specify the user username, and "password" to specify the password.
+    Returns a user id.
+    """
+    return await request_shell(_create_user, config_user_response)
 
 
-async def create_user(client: supabase.Client, data: dict) -> dict | int:
+async def _create_user(client: supabase.Client, data: dict) -> dict | int:
     response = await client.auth.sign_up({
         "email": data["email"],
         "password": data["password"]
@@ -56,10 +75,14 @@ async def create_user(client: supabase.Client, data: dict) -> dict | int:
 
 @user_bp.route("/update_user_settings", methods=["POST", "OPTIONS"])
 async def update_user_settings_full():
-    return await request_shell(update_user_settings)
+    """Updates the settings of a user. Use "id" to specify the user's id,
+    "description" to specify the user's description, and "tags" to specify the user's tags.
+    Returns nothing.
+    """
+    return await request_shell(_update_user_settings)
 
 
-async def update_user_settings(client, data):
+async def _update_user_settings(client, data):
     await client.table("user_data").update({
         "description": data["description"],
         "tags": data["tags"]

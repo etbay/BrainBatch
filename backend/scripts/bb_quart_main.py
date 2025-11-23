@@ -10,6 +10,7 @@ def create_app():
 
     app.register_blueprint(user_bp)
     app.register_blueprint(group_bp)
+    app.run(host="127.0.0.1", port=5000)
     return app
 
 

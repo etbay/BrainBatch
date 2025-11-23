@@ -31,8 +31,11 @@ def config_user_response(response_info: tuple) -> quart.Response:
     return response
 
 
-def make_error(message, code):
-    return quart.jsonify({"success": False, "error": message}), code, COMMON_HEADERS
+def make_error(message: str, code: int):
+    response = quart.jsonify({"success": False, "error": message})
+    response.headers.extend(COMMON_HEADERS)
+    response.status_code = 200
+    return response
 
 
 async def request_shell(action, response_config = config_response):
@@ -48,8 +51,8 @@ async def request_shell(action, response_config = config_response):
     try:
         result = await action(supa, data)
     except supa_errors.AuthApiError as e:
-        return quart.jsonify({"success": False, "error": e.code}), 200, COMMON_HEADERS
+        return make_error(e.code, 200)
     except BaseException as e:
-        return quart.jsonify({"success": False, "error": str(e)}), 500, COMMON_HEADERS
+        return make_error(str(e), 500)
     
     return response_config(result)

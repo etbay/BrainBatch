@@ -5,15 +5,15 @@ def create_app():
     tracemalloc.start()
     app = quart.Quart(__name__)
 
+    # Set maximum file upload size to 5 MiB
+    app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+
     from user_management import user_bp
     from group_management import group_bp
 
     app.register_blueprint(user_bp)
     app.register_blueprint(group_bp)
-<<<<<<< Updated upstream:backend/brainbatch_backend/scripts/app.py
-=======
     app.run(host="127.0.0.1", port=5000, use_reloader=False)
->>>>>>> Stashed changes:backend/scripts/app_main.py
     return app
 
 

@@ -1,0 +1,115 @@
+import quart
+import supabase
+import uuid
+from werkzeug.datastructures import FileStorage
+from headers import COMMON_HEADERS
+from app_globals import SUPA_URL, SUPA_KEY
+from misc_utils import *
+
+
+uploads_bp = quart.Blueprint('uploads', __name__, url_prefix='/uploads')
+
+# The file types that are allowed to be uploaded.
+# For images/video/audio, I'm restricting it to formats that are widely supported by web browsers.
+ALLOWED_FILETYPES = {
+    # Documents
+    "text/plain": ".txt",
+    "application/pdf": ".pdf",
+    "text/markdown": ".md",
+    "application/x-tex": ".tex",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",
+    "application/vnd.oasis.opendocument.text": ".odt",
+    "application/vnd.oasis.opendocument.presentation": ".odp",
+    "application/vnd.oasis.opendocument.spreadsheet": ".ods",
+    "text/csv": ".csv",
+    # Images
+    "image/png": ".png",
+    "image/apng": ".apng",
+    "image/jpeg": ".jpg",
+    "image/gif": ".gif",
+    "image/avif": ".avif",
+    "image/webp": ".webp",
+    "image/svg+xml": ".svg",
+    # Videos
+    "video/mp4": ".mp4",
+    "video/webm": ".webm",
+    # Audio
+    "audio/mpeg": ".mp3",
+    "audio/mp4": ".m4a",
+    "audio/wav": ".wav",
+    "audio/flac": ".flac",
+    "audio/ogg": ".ogg"
+}
+
+
+@uploads_bp.route("/upload_file", methods=["POST", "OPTIONS"])
+async def upload_file():
+    """API endpoint for uploading a user file.
+    To upload to this endpoint, send a POST request with a FormData body (no JSON) containing a single file.
+    Only certain file types are allowed (see ALLOWED_FILETYPES)."""
+
+    resp = affirm_request()
+    if resp is not None:
+        resp.headers.add("Accept-Post", "multipart/form-data")
+        return resp
+    
+    # Must have a Content-Type of multipart/form-data
+    if not quart.request.content_type.startswith("multipart/form-data"):
+        resp = make_error("Files must be uploaded as a FormData object.", 415)
+        resp.headers.add("Accept-Post", "multipart/form-data")
+        return resp
+    
+    reqfiles = await quart.request.files
+    
+    if len(reqfiles) != 1:
+        resp = make_error("The request must contain exactly one file.", 400)
+        resp.headers.add("Accept-Post", "multipart/form-data")
+        return resp
+    
+    file: FileStorage = reqfiles.getlist(list(reqfiles.keys())[0])[0]
+
+    # Check that the file type is allowed
+    if not file.mimetype:
+        resp = make_error("The uploaded file must have a valid MIME type.", 415)
+        resp.headers.add("Accept-Post", "multipart/form-data")
+        return resp
+    if file.mimetype not in ALLOWED_FILETYPES:
+        resp = make_error(f"Files of type {file.mimetype} are not allowed.", 415)
+        resp.headers.add("Accept-Post", "multipart/form-data")
+        return resp
+    
+    filename = file.filename
+    # Add correct file extension if necessary
+    if not filename:
+        filename = f"file{ALLOWED_FILETYPES[file.mimetype]}"
+    elif not filename.lower().endswith(ALLOWED_FILETYPES[file.mimetype]):
+        filename = filename + ALLOWED_FILETYPES[file.mimetype]
+
+    # Generate a unique file ID
+    file_id = str(uuid.uuid4())
+
+    supa: supabase.AsyncClient = await supabase.create_async_client(SUPA_URL, SUPA_KEY)
+
+    # Add file data to database
+    await supa.table("user_message_files").insert({
+        "id": file_id,
+        "filename": filename
+    }).execute()
+
+    # Upload file to storage bucket
+    upload_response = await supa.storage.from_("UserMessageFiles").upload(
+        path=f"{file_id}/{filename}",
+        file=file.stream,
+        file_options={"content_type": str(file.mimetype)}
+    )
+    # Public URL of the uploaded file
+    file_url = await supa.storage.from_("UserMessageFiles").get_public_url(upload_response.full_path)
+
+    # Send response
+    resp = quart.jsonify({"success": True, "data": {"id": file_id, "filepath": file_url}})
+    resp.headers.extend(COMMON_HEADERS)
+    resp.headers.add("Location", file_url)
+    resp.status_code = 201
+    return resp

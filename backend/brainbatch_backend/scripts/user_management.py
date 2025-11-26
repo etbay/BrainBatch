@@ -10,14 +10,11 @@ from misc_utils import *
 user_bp = quart.Blueprint('users', __name__, url_prefix='/users')
 
 
-<<<<<<< Updated upstream:backend/brainbatch_backend/scripts/user_management.py
-=======
 """Note that a full user object is a row of data from the user_data table.
 To see the columns/elements of said row/object, go onto the supabase Brain Batch project.
 """
 
 
->>>>>>> Stashed changes:backend/scripts/user_management.py
 @user_bp.route("/get_user", methods=["POST", "OPTIONS"])
 async def get_user_full() -> quart.Response | tuple:
     """Gets the user of the specified id. Use "id" to specify the user id.
@@ -31,7 +28,7 @@ async def _get_user(client, data) -> quart.Response | tuple:
 
 
 @user_bp.route("/login", methods=["POST", "OPTIONS"])
-async def authenticate_user_full() -> tuple:
+async def authenticate_user_full():
     """Authenticates a user with their email and passsword.
     Use "email" to specify the email, and "password" to specify the password.
     Returns a user id.
@@ -49,7 +46,7 @@ async def _authenticate_user(client, data):
 
 
 @user_bp.route("/new_user", methods=["POST", "OPTIONS"])
-async def create_user_full() -> dict | int:
+async def create_user_full():
     """Creates a brand new user. Use "email" to specify the user email,
     "username" to specify the user username, and "password" to specify the password.
     Returns a user id.
@@ -57,7 +54,7 @@ async def create_user_full() -> dict | int:
     return await request_shell(_create_user, config_user_response)
 
 
-async def _create_user(client: supabase.Client, data: dict) -> dict | int:
+async def _create_user(client: supabase.Client, data: dict):
     response = await client.auth.sign_up({
         "email": data["email"],
         "password": data["password"]

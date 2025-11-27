@@ -113,3 +113,38 @@ async def upload_file():
     resp.headers.add("Location", file_url)
     resp.status_code = 201
     return resp
+
+
+@uploads_bp.route("/get_file", methods=["GET", "OPTIONS"])
+async def get_file():
+    """Given a file UUID, this endpoint redirects to the public URL of the file.
+    Use the "id" query parameter to specify the file UUID, for example:
+    
+    /uploads/get_file?id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+    On success, a 303 redirect to the file location is returned.
+    If the file is not found, a 404 error is returned.
+    """
+
+    resp = affirm_request("GET")
+    if resp is not None:
+        return resp
+    
+    file_id = quart.request.args.get("id", type=str)
+    supa = await supabase.create_async_client(SUPA_URL, SUPA_KEY)
+
+    # Lookup file in database
+    db_response = await supa.table("user_message_files").select("filename").eq("id", file_id).execute()
+    try:
+        filename = db_response.data[0]["filename"]
+    except IndexError, KeyError:
+        # If the list is empty, then no file was found
+        return make_error("No file with this ID was found.", 404)
+    
+    # Get public URL of the file
+    file_url = await supa.storage.from_("UserMessageFiles").get_public_url(f"{file_id}/{filename}")
+
+    # Return redirect to the file URL
+    resp = quart.redirect(file_url, code=303)
+    resp.headers.extend(COMMON_HEADERS)
+    return resp

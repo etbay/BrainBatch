@@ -38,7 +38,13 @@ declare module '$env/static/private' {
 	export const ComSpec: string;
 	export const DriverData: string;
 	export const EDITOR: string;
-	export const EFC_17780_1592913036: string;
+	export const EFC_10312_1262719628: string;
+	export const EFC_10312_1592913036: string;
+	export const EFC_10312_2283032206: string;
+	export const EFC_10312_2775293581: string;
+	export const EFC_10312_3789132940: string;
+	export const FPS_BROWSER_APP_PROFILE_STRING: string;
+	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
@@ -107,6 +113,8 @@ declare module '$env/static/private' {
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
+	export const VIRTUAL_ENV: string;
+	export const VIRTUAL_ENV_PROMPT: string;
 	export const vproject: string;
 	export const VS110COMNTOOLS: string;
 	export const VS120COMNTOOLS: string;
@@ -118,6 +126,8 @@ declare module '$env/static/private' {
 	export const VSCODE_NONCE: string;
 	export const windir: string;
 	export const ZES_ENABLE_SYSMAN: string;
+	export const _OLD_VIRTUAL_PATH: string;
+	export const _OLD_VIRTUAL_PROMPT: string;
 }
 
 /**
@@ -159,7 +169,13 @@ declare module '$env/dynamic/private' {
 		ComSpec: string;
 		DriverData: string;
 		EDITOR: string;
-		EFC_17780_1592913036: string;
+		EFC_10312_1262719628: string;
+		EFC_10312_1592913036: string;
+		EFC_10312_2283032206: string;
+		EFC_10312_2775293581: string;
+		EFC_10312_3789132940: string;
+		FPS_BROWSER_APP_PROFILE_STRING: string;
+		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
 		HOME: string;
 		HOMEDRIVE: string;
@@ -228,6 +244,8 @@ declare module '$env/dynamic/private' {
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
+		VIRTUAL_ENV: string;
+		VIRTUAL_ENV_PROMPT: string;
 		vproject: string;
 		VS110COMNTOOLS: string;
 		VS120COMNTOOLS: string;
@@ -239,6 +257,8 @@ declare module '$env/dynamic/private' {
 		VSCODE_NONCE: string;
 		windir: string;
 		ZES_ENABLE_SYSMAN: string;
+		_OLD_VIRTUAL_PATH: string;
+		_OLD_VIRTUAL_PROMPT: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
 	}

@@ -7,11 +7,12 @@ def create_app():
 
     from user_management import user_bp
     from group_management import group_bp
+    from file_uploads import uploads_bp
 
     app.register_blueprint(user_bp)
     app.register_blueprint(group_bp)
+    app.register_blueprint(uploads_bp)
     app.run(host="127.0.0.1", port=5000)
-    return app
 
 
 if __name__ == "__main__":

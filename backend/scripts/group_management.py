@@ -127,7 +127,7 @@ async def add_moderator(client, data):
 
 
 @group_bp.route("/remove_moderator", methods=["POST", "OPTIONS"])
-async def remove_moderator() -> quart.Response | tuple:
+async def remove_moderator_full() -> quart.Response | tuple:
     """Remove the moderator from the specified group. Use "group_id" to specify the group
     and "user_id" to specify the moderator to remove. Returns a full group object.
     """

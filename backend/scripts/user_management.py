@@ -14,6 +14,10 @@ user_bp = quart.Blueprint('users', __name__, url_prefix='/users')
 To see the columns/elements of said row/object, go onto the supabase Brain Batch project.
 """
 
+@user_bp.route("/test")
+def test():
+    return "Hello World!"
+
 
 @user_bp.route("/get_user", methods=["POST", "OPTIONS"])
 async def get_user_full() -> quart.Response | tuple:
@@ -52,7 +56,7 @@ async def create_user_full() -> dict | int:
     return await request_shell(create_user, config_user_response)
 
 
-async def create_user(client: supabase.Client, data: dict) -> dict | int:
+async def create_user(client: supabase.Client, data: dict) -> tuple:
     sign_up_response = await client.auth.sign_up({
         "email": data["email"],
         "password": data["password"]

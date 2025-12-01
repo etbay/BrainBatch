@@ -1,14 +1,42 @@
+<script>
+    let userData = {
+        email: '',
+        password: ''
+    };
+
+    async function login(event) {
+        event.preventDefault();
+
+        const createAccountAttempt = await fetch('http://127.0.0.1:5000/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (createAccountAttempt.ok) {
+            const result = await createAccountAttempt.json();
+            alert('Login successful!');
+            console.log(result);
+        } else {
+            const error = await createAccountAttempt.json();
+            alert(`Error: ${error.message}`);
+        }
+    }
+</script>
+
 <div class="login-container">
     <h1>Log in to BrainBatch</h1>
     <p>Don't have an account yet? <a href="/createaccount">Create one!</a></p>
-    <form>
+    <form on:submit={login}>
         <div class="form-field">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email" bind:value={userData.email} required>
         </div>
         <div class="form-field">
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+            <input type="password" name="password" id="password" bind:value={userData.password} required>
         </div>
         <input type="submit" value="Log in">
     </form>

@@ -1,27 +1,51 @@
 <script>
+    import { auth } from '$lib/stores/auth';
+    import { goto } from '$app/navigation';
+
     let userData = {
         email: '',
         password: ''
     };
 
+    let errorMessage = '';
+
     async function login(event) {
         event.preventDefault();
 
-        const createAccountAttempt = await fetch('http://127.0.0.1:5000/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
+        try {
+            const createAccountAttempt = await fetch('http://127.0.0.1:5000/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
 
-        if (createAccountAttempt.ok) {
-            const result = await createAccountAttempt.json();
-            alert('Login successful!');
-            console.log(result);
-        } else {
-            const error = await createAccountAttempt.json();
-            alert(`Error: ${error.message}`);
+            if (createAccountAttempt.ok) {
+                const result = await createAccountAttempt.json();
+                if (result.success)
+                {
+                    console.log('Login successful.');
+
+                    auth.set({
+                        userId: result.data.id, 
+                        isLoggedIn: true
+                    });
+
+                    goto('/profile');
+                }
+                else
+                {
+                    console.log('Incorrect email or password.');
+                    errorMessage = 'Invalid email or password.';
+                }
+            } else {
+                const error = await createAccountAttempt.json();
+                console.log(`Error: ${error.message || 'Backend communication error.'}`);
+            }
+        } catch (e) {
+            console.error('Error logging in:', e);
+            alert('An unexpected error occurred. Please try again.');
         }
     }
 </script>
@@ -29,6 +53,11 @@
 <div class="login-container">
     <h1>Log in to BrainBatch</h1>
     <p>Don't have an account yet? <a href="/createaccount">Create one!</a></p>
+
+    {#if errorMessage}
+        <p style="color: red; text-align: center;">{errorMessage}</p>
+    {/if}
+
     <form on:submit={login}>
         <div class="form-field">
             <label for="email">Email:</label>

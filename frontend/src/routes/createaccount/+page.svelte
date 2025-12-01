@@ -1,10 +1,15 @@
 <script>
+    import { error } from "@sveltejs/kit";
+    import { goto } from '$app/navigation';
+
     let userData = {
         username: '',
         display_name: '',
         email: '',
         password: ''
     };
+
+    let errorMessage = '';
 
     async function createAccount(event) {
         event.preventDefault();
@@ -19,8 +24,24 @@
 
         if (createAccountAttempt.ok) {
             const result = await createAccountAttempt.json();
-            alert('Account created successfully!');
-            console.log(result);
+            if (result.success)
+            {
+                console.log('Account created successfully!');
+                errorMessage = '';
+                console.log(result.data.id)
+
+                auth.set({
+                    userId: result.data.id, 
+                    isLoggedIn: true
+                });
+
+                goto('/profile')
+            }
+            else
+            {
+                console.log('Username or email already in use.');
+                errorMessage = 'Username or email already in use.';
+            }
         } else {
             const error = await createAccountAttempt.json();
             alert(`Error: ${error.message}`);
@@ -31,6 +52,11 @@
 <div class="login-container">
     <h1>Create a BrainBatch account</h1>
     <p>Already have an account? <a href="/login">Log in!</a></p>
+
+    {#if errorMessage}
+        <p style="color: red; text-align: center;">{errorMessage}</p>
+    {/if}
+
     <form on:submit={createAccount}>
         <div class="form-field">
             <label for="username">Username:</label>

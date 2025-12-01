@@ -16,7 +16,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({})
+                body: JSON.stringify({ user_id: 'f97d9776-e0ee-43a9-8e40-29c624b4b840' })
             });
             const response = await res.json();
             console.log('Groups data:', response);
@@ -32,14 +32,22 @@
 
     async function createGroup() {
         if (!newGroupName.trim()) return;
-        const res = await fetch('http://127.0.0.1:5000/api/groups/', {
+        const res = await fetch('http://127.0.0.1:5000/groups/new_group', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({ name: newGroupName.trim() })
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                group_name: newGroupName.trim(),
+                creator_id: 'f97d9776-e0ee-43a9-8e40-29c624b4b840'
+            })
         });
         const data = await res.json();
-        if (!res.ok) { error = data.error || 'Failed to create'; return; }
-        goto(`/groups/${data.id}`);
+        if (!res.ok) {
+            error = data.error || 'Failed to create';
+            return;
+        }
+        console.log('Group created:', data);
     }
 
     onMount(loadGroups);

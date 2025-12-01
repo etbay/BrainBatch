@@ -32,8 +32,9 @@ async def get_all_groups_full() -> quart.Response | tuple:
 
 async def get_all_groups(client, data) -> quart.Response | tuple:
     try:
+        user_id = data.get("user_id")
         print("Querying group_data table")
-        response = await client.table("group_data").select("*").execute()
+        response = await client.table("group_data").select("*").contains("members", [user_id]).execute()
         print("Query result:", response.data)  # Log the query result
         return response
     except Exception as e:
@@ -52,7 +53,7 @@ async def create_group(client, data) -> quart.Response | tuple:
     return await client.table("group_data").insert({
         "name": data["group_name"],
         "moderators": [data["creator_id"]],
-        "members": [],
+        "members": [data["creator_id"]],
         "chat_areas": [chat_area_base("General")]
     }).execute()
 

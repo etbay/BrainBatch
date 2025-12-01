@@ -23,10 +23,22 @@ async def get_group_full() -> quart.Response | tuple:
     """
     return await request_shell(get_group)
 
-
 async def get_group(client, data) -> quart.Response | tuple:
     return await client.table("group_data").select("*").eq("id", data["id"]).execute()
 
+@group_bp.route("/get_all_groups", methods=["POST", "OPTIONS"])
+async def get_all_groups_full() -> quart.Response | tuple:
+    return await request_shell(get_all_groups)
+
+async def get_all_groups(client, data) -> quart.Response | tuple:
+    try:
+        print("Querying group_data table")
+        response = await client.table("group_data").select("*").execute()
+        print("Query result:", response.data)  # Log the query result
+        return response
+    except Exception as e:
+        print(f"Database query failed: {e}")
+        raise
 
 @group_bp.route("/new_group", methods=["POST", "OPTIONS"])
 async def create_group_full() -> quart.Response | tuple:

@@ -1,9 +1,12 @@
+from quart_cors import cors
+
 def create_app():
     import quart
     import tracemalloc
 
     tracemalloc.start()
     app = quart.Quart(__name__)
+    app = cors(app, allow_origin="http://localhost:5173")
 
     from user_management import user_bp
     from group_management import group_bp

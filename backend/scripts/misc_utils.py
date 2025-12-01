@@ -16,7 +16,7 @@ def affirm_request(req_type="POST") -> tuple | None:
 
 
 def config_response(response_info: quart.Response) -> quart.Response:
-    response = quart.jsonify({"success": True, "data": response_info.data[0]})
+    response = quart.jsonify({"success": True, "data": response_info.data})
     response.headers.extend(COMMON_HEADERS)
     response.status_code = 200
     return response

@@ -74,7 +74,6 @@ async def create_user(client: supabase.Client, data: dict) -> tuple:
         "username": data["username"]
     }).execute()
     
-    print(sign_up_response.session)
     return sign_up_response.user.id, sign_up_response.session
 
 
@@ -93,30 +92,31 @@ async def update_user_settings(client, data):
     }).eq("id", data["id"]).execute()
 
 
-@user_bp.route("/reset_password", methods=["GET", "OPTIONS"])
-async def login_with_email_full():
-    return await request_shell(login_with_email, config_dict_response, input_type="args", req_type="GET")
+@user_bp.route("/email_code", methods=["GET", "OPTIONS"])
+async def email_code_full():
+    """Sends a reset password code to the user's email. This is a GET request, so specify the email like so:
+    backend_url/users/email_code?email=<user_email>
+    """
+    return await request_shell(email_code, config_dict_response, input_type="args", req_type="GET")
 
 
-async def login_with_email(client: supabase.Client, data: multidict.MultiDict):
+async def email_code(client: supabase.Client, data: multidict.MultiDict):
     email = data.get("email", type=str)
-
-    respone: supabase_auth.AuthResponse = await client.auth.sign_in_with_otp({
-        "email": email,
-        "options":
-        {
-            "email_redirect_to": "URL To go to"
-        }
-    })
-
-    return {"access_token": respone.session.access_token}
+    await client.auth.sign_in_with_otp({"email": email})
 
 
 @user_bp.route("/reset_password", methods=["POST", "OPTIONS"])
 async def reset_password_full():
-    return await request_shell()
+    """Resets the user password with the given email and token/code.
+    Use email and token to specify the values.
+    """
+    return await request_shell(reset_password, config_dict_response)
 
 
-async def reset_password(client: supabase.Client, data: multidict.MultiDict):
-    await client.auth.set_session(data["access_token"], None)
-    await client.auth.update_user({"password": "new_password"})
+async def reset_password(client: supabase.Client, data: dict):
+    await client.auth.verify_otp({
+        "email": data["email"],
+        "token": data["token"],
+        "type": "email"
+    })
+    await client.auth.update_user({"password": data["new_password"]})

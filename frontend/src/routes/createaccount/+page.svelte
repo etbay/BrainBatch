@@ -1,5 +1,6 @@
 <script>
     import { error } from "@sveltejs/kit";
+    import { auth } from '$lib/stores/auth';
     import { goto } from '$app/navigation';
 
     let userData = {

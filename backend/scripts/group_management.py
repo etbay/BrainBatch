@@ -28,6 +28,7 @@ async def get_group(client, data) -> quart.Response | tuple:
 
 @group_bp.route("/get_all_groups", methods=["POST", "OPTIONS"])
 async def get_all_groups_full() -> quart.Response | tuple:
+    """Gets all groups that a user has access to. Returns a list of group objects."""
     return await request_shell(get_all_groups)
 
 async def get_all_groups(client, data) -> quart.Response | tuple:
@@ -35,7 +36,7 @@ async def get_all_groups(client, data) -> quart.Response | tuple:
         user_id = data.get("user_id")
         print("Querying group_data table")
         response = await client.table("group_data").select("*").contains("members", [user_id]).execute()
-        print("Query result:", response.data)  # Log the query result
+        print("Query result:", response.data)
         return response
     except Exception as e:
         print(f"Database query failed: {e}")

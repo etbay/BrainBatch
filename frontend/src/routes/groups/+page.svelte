@@ -1,5 +1,6 @@
 <script>
     import { onMount } from 'svelte';
+    import { auth } from '$lib/stores/auth';
     import { goto } from '$app/navigation';
 
     let groups = [];
@@ -8,15 +9,23 @@
     let newGroupName = '';
 
     async function loadGroups() {
+        if (!$auth.userId)
+        {
+            console.error('Error: No user logged in');
+            loading = false;
+            return;
+        }
+
         loading = true;
         error = '';
+
         try {
             const res = await fetch('http://127.0.0.1:5000/groups/get_all_groups', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ user_id: 'f97d9776-e0ee-43a9-8e40-29c624b4b840' })
+                body: JSON.stringify({ user_id: $auth.userId })
             });
             const response = await res.json();
             console.log('Groups data:', response);
@@ -31,6 +40,12 @@
     }
 
     async function createGroup() {
+        if (!$auth.userId)
+        {
+            console.error('Error: No user logged in');
+            return;
+        }
+
         if (!newGroupName.trim()) return;
         const res = await fetch('http://127.0.0.1:5000/groups/new_group', {
             method: 'POST',
@@ -39,7 +54,7 @@
             },
             body: JSON.stringify({
                 group_name: newGroupName.trim(),
-                creator_id: 'f97d9776-e0ee-43a9-8e40-29c624b4b840'
+                creator_id: $auth.userId
             })
         });
         const data = await res.json();
@@ -48,6 +63,7 @@
             return;
         }
         console.log('Group created:', data);
+        await loadGroups();
     }
 
     onMount(loadGroups);
@@ -61,12 +77,14 @@
     <button on:click={createGroup}>Create</button>
 </div>
 
-{#if loading}<p>Loading…</p>{/if}
-
-<ul>
-    {#each groups as g}
-        <li><a href={'/groups/${g.id}'}>{g.name}</a></li>
-    {:else}
-        <p>No groups found. Create one to get started!</p>
-    {/each}
-</ul>
+{#if loading}
+    <p>Loading…</p>
+{:else}
+    <ul>
+        {#each groups as g}
+            <li><a href={'/groups/${g.id}'}>{g.name}</a></li>
+        {:else}
+            <p>No groups found. Create one to get started!</p>
+        {/each}
+    </ul>
+{/if}

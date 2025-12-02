@@ -31,14 +31,13 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background-color: var(--facebook-gray);
             color: var(--dark);
             line-height: 1.6;
-            padding: 20px;
+            padding: 0px;
         }
         
         .container {
@@ -50,7 +49,7 @@
             overflow: hidden;
         }
         
-        header {
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -497,18 +496,18 @@
 </head>
 <body>
     <div class="container">
-        <header>
+        <div class="header">
             <div class="logo">
                 <i class="fas fa-users"></i>
-                <span>StudyConnect</span>
+                <span>BrainBatch</span>
             </div>
             <nav class="nav-links">
                 <a href="/"><i class="fas fa-home"></i> Dashboard</a>
                 <a href="/groups"><i class="fas fa-user-friends"></i> Groups</a>
-                <a href="/messages"><i class="fas fa-comments"></i> Messages</a>
+                <a href="/profile"><i class="fas fa-comments"></i> Messages</a>
                 <a href="/profile" class="active"><i class="fas fa-user"></i> Profile</a>
             </nav>
-        </header>
+        </div>
         
         <div class="profile-container">
             <div class="profile-sidebar">
@@ -554,19 +553,19 @@
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a>
-                    <a href="/profile/photos" class="nav-item">
+                    <a href="/profile" class="nav-item">
                         <i class="fas fa-photo-video"></i>
                         <span>Photos</span>
                     </a>
-                    <a href="/profile/groups" class="nav-item">
+                    <a href="/groups" class="nav-item">
                         <i class="fas fa-users"></i>
                         <span>Study Groups</span>
                     </a>
-                    <a href="/profile/events" class="nav-item">
+                    <a href="/profile" class="nav-item">
                         <i class="fas fa-calendar-alt"></i>
                         <span>Events</span>
                     </a>
-                    <a href="/profile/courses" class="nav-item">
+                    <a href="/canvas" class="nav-item">
                         <i class="fas fa-book"></i>
                         <span>Courses</span>
                     </a>

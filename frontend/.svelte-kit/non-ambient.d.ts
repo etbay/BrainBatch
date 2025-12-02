@@ -44,6 +44,6 @@ declare module "$app/types" {
 		};
 		Pathname(): "/" | "/about" | "/about/" | "/canvas" | "/canvas/" | "/createaccount" | "/createaccount/" | "/groups" | "/groups/" | "/login" | "/login/" | "/profile" | "/profile/" | "/sverdle" | "/sverdle/" | "/sverdle/how-to-play" | "/sverdle/how-to-play/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/favicon.svg" | "/robots.txt" | string & {};
+		Asset(): "/brainbatch.svg" | "/robots.txt" | string & {};
 	}
 }

@@ -8,8 +8,18 @@
     let error = '';
     let newGroupName = '';
 
+    async function verifyLogin() {
+        if (!$auth.isLoggedIn)
+        {
+            goto('/login');
+            return;
+        }
+
+        loadGroups();
+    }
+
     async function loadGroups() {
-        if (!$auth.userId)
+        if (!$auth.isLoggedIn)
         {
             console.error('Error: No user logged in');
             loading = false;
@@ -66,7 +76,7 @@
         await loadGroups();
     }
 
-    onMount(loadGroups);
+    onMount(verifyLogin);
 </script>
 
 <h1>Your Groups</h1>

@@ -865,3 +865,19 @@
     </script>
 </body>
 </html>
+
+<script>
+    import { onMount } from 'svelte';
+    import { auth } from '$lib/stores/auth';
+    import { goto } from '$app/navigation';
+
+    async function verifyLogin() {
+        if (!$auth.isLoggedIn)
+        {
+            goto('/login');
+            return;
+        }
+    }
+
+    onMount(verifyLogin);
+</script>

@@ -1,4 +1,1 @@
 ./scripts/__pycache__
-*.pyc
-Dockerfile
-.dockerignore

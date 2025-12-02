@@ -2,16 +2,20 @@ import requests
 
 
 def test_app():
-    """files = {'file': ('example.txt', open('example.txt', 'rb'), 'text/plain')}
-    response = requests.post('http://127.0.0.1:5000/uploads/upload_file', files=files)
+    response = requests.post('http://127.0.0.1:5000/users/login', json={
+        'email': 'anthony@example.com',
+        'password': 'F00B@r!'
+    })
 
-    if response:
-        print(response.json())
-    else:
-        print("No response")"""
-    
-    response = requests.get('http://127.0.0.1:5000/uploads/get_file?id=7d3c3ab6-458b-4345-afbf-00b5ba859230')
-    print(response.url)
+    print(response.json())
+
+    response = requests.post('http://127.0.0.1:5000/users/get_user', json={
+        'id': response.json()["data"]["id"]
+    })
+
+    print(response)
+
+    # response = requests.get('http://127.0.0.1:5000/users/reset_password?email=anthony@example.com')
 
 if __name__ == "__main__":
     test_app()

@@ -123,8 +123,8 @@ async def get_file_full():
     return await request_shell(get_file, None, "args", "GET")
 
 
-async def get_file(client: supabase.Client, args: multidict.MultiDict):
-    file_id = args.get("id", type=str)
+async def get_file(client: supabase.Client, data: multidict.MultiDict):
+    file_id = data.get("id", type=str)
 
     # Lookup file in database
     db_response = await client.table("user_message_files").select("filename").eq("id", file_id).execute()

@@ -5,6 +5,8 @@ from headers import COMMON_HEADERS
 import supabase_auth.errors as supa_errors
 from app_globals import SUPA_URL, SUPA_KEY
 from misc_utils import *
+import multidict
+import random
 
 
 user_bp = quart.Blueprint('users', __name__, url_prefix='/users')
@@ -27,7 +29,7 @@ async def get_user_full() -> quart.Response | tuple:
     return await request_shell(get_user)
 
 
-async def get_user(client, data) -> quart.Response | tuple:
+async def get_user(client: supabase.Client, data) -> quart.Response | tuple:
     return await client.table("user_data").select("*").eq("id", data["id"]).execute()
 
 
@@ -44,7 +46,7 @@ async def authenticate_user(client, data):
         "email": data["email"],
         "password": data["password"]
     })
-    
+
     return response.user.id, response.session
 
 
@@ -69,10 +71,10 @@ async def create_user(client: supabase.Client, data: dict) -> tuple:
     await client.table("user_data").insert({
         "id": sign_up_response.user.id,
         "email": data["email"],
-        "username": data["username"],
-        "password": data["password"]
+        "username": data["username"]
     }).execute()
     
+    print(sign_up_response.session)
     return sign_up_response.user.id, sign_up_response.session
 
 
@@ -89,3 +91,32 @@ async def update_user_settings(client, data):
         "description": data["description"],
         "tags": data["tags"]
     }).eq("id", data["id"]).execute()
+
+
+@user_bp.route("/reset_password", methods=["GET", "OPTIONS"])
+async def login_with_email_full():
+    return await request_shell(login_with_email, config_dict_response, input_type="args", req_type="GET")
+
+
+async def login_with_email(client: supabase.Client, data: multidict.MultiDict):
+    email = data.get("email", type=str)
+
+    respone: supabase_auth.AuthResponse = await client.auth.sign_in_with_otp({
+        "email": email,
+        "options":
+        {
+            "email_redirect_to": "URL To go to"
+        }
+    })
+
+    return {"access_token": respone.session.access_token}
+
+
+@user_bp.route("/reset_password", methods=["POST", "OPTIONS"])
+async def reset_password_full():
+    return await request_shell()
+
+
+async def reset_password(client: supabase.Client, data: multidict.MultiDict):
+    await client.auth.set_session(data["access_token"], None)
+    await client.auth.update_user({"password": "new_password"})

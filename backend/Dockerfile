@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
 EXPOSE 5000
-CMD ["python", "scripts/bb_quart_main.py"]
+CMD ["python", "-u", "scripts/bb_quart_main.py"]

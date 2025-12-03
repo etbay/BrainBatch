@@ -67,8 +67,10 @@ async def request_shell(action, response_config = config_response, input_type = 
     try:
         result = await action(supa, action_input)
     except supa_errors.AuthApiError as e:
+        print(e.code)
         return make_error(e.code, 200)
     except BaseException as e:
+        print(e)
         return make_error(str(e), 500)
     
     if response_config is None:

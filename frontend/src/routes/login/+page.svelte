@@ -67,7 +67,7 @@
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" bind:value={userData.password} required>
         </div>
-        <input type="submit" value="Log in">
+        <input type="submit" value="Log in" id="login">
     </form>
 </div>
 

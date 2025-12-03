@@ -1,5 +1,6 @@
 from quart_cors import cors
 
+
 def create_app():
     import quart
     import tracemalloc
@@ -15,7 +16,7 @@ def create_app():
     app.register_blueprint(user_bp)
     app.register_blueprint(group_bp)
     app.register_blueprint(uploads_bp)
-    app.run(host="127.0.0.1", port=5000)
+    app.run(host="127.0.0.1", port=5173)
 
 
 if __name__ == "__main__":

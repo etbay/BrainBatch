@@ -69,8 +69,7 @@ async def create_user(client: supabase.Client, data: dict) -> tuple:
     await client.table("user_data").insert({
         "id": sign_up_response.user.id,
         "email": data["email"],
-        "username": data["username"],
-        "password": data["password"]
+        "username": data["username"]
     }).execute()
     
     return sign_up_response.user.id, sign_up_response.session

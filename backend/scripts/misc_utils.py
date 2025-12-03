@@ -1,30 +1,25 @@
 import quart
 import supabase
-from headers import *
 import supabase_auth.errors as supa_errors
 from app_globals import SUPA_URL, SUPA_KEY
 
 
-def affirm_request(req_type="POST") -> tuple | None:
+def affirm_request(http_method="POST") -> quart.Response | None:
+    """Generates a response for requests that do not match the canonical HTTP method for the endpoint."""
+
     # Process OPTIONS and non-POST requests
     if quart.request.method == "OPTIONS":
-        return make_error("Request method was not of OPTIONS.", 204, POST_PREFLIGHT_HEADERS)
-    if quart.request.method != req_type:
-        return make_error(f"This endpoint only accepts {req_type} requests.", 405)
+        resp = quart.make_response("", 204)
+    if quart.request.method != http_method:
+        resp = quart.jsonify({"success": False, "error": f"This endpoint only accepts {http_method} requests."})
+        resp.status_code = 405
+        return resp
     
     return None
 
 
-def config_response(response_info: quart.Response) -> quart.Response:
-    response = quart.jsonify({"success": True, "data": response_info.data[0]})
-    response.headers.extend(COMMON_HEADERS)
-    response.status_code = 200
-    return response
-
-
-def config_dict_response(response_info: dict) -> quart.Response:
-    response = quart.jsonify({"success": True, "data": response_info})
-    response.headers.extend(COMMON_HEADERS)
+async def config_response(response_info: quart.Response) -> quart.Response:
+    response = quart.jsonify({"success": True, "data": (await response_info.data)[0]})
     response.status_code = 200
     return response
 
@@ -33,15 +28,13 @@ def config_user_response(response_info: tuple) -> quart.Response:
     response = quart.jsonify({"success": True, "data": {"id": response_info[0]}})
     response.set_cookie("sb-access-token", response_info[1].access_token, max_age= response_info[1].expires_in)
     response.set_cookie("sb-refresh-token",  response_info[1].refresh_token, max_age= response_info[1].expires_in)
-    response.headers.extend(COMMON_HEADERS)
     response.status_code = 200
     return response
 
 
-def make_error(message: str, code: int, headers: dict = COMMON_HEADERS):
+def make_error(message, code):
     response = quart.jsonify({"success": False, "error": message})
-    response.headers.extend(headers)
-    response.status_code = 200
+    response.status_code = code
     return response
 
 
@@ -64,13 +57,12 @@ async def request_shell(action, response_config = config_response, input_type = 
         case "args":
             action_input = quart.request.args
         case _:
-            return make_error(f"Input type {input_type} was not recognized.", 200)
+            raise ValueError(f"Input type {input_type} was not recognized.")
     
-    # Forward authentication to Supabase
     try:
         result = await action(supa, action_input)
     except supa_errors.AuthApiError as e:
-        return make_error(e.code, 200)
+        return make_error(e.code, 400)
     except BaseException as e:
         return make_error(str(e), 500)
     

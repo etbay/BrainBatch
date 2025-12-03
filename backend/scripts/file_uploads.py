@@ -1,9 +1,9 @@
 import quart
 import supabase
 import uuid
+from quart_cors import route_cors
 from werkzeug.datastructures import FileStorage
-from headers import COMMON_HEADERS
-from app_globals import SUPA_URL, SUPA_KEY
+from app_globals import *
 from misc_utils import *
 import multidict
 
@@ -47,6 +47,7 @@ ALLOWED_FILETYPES = {
 
 
 @uploads_bp.route("/upload_file", methods=["POST", "OPTIONS"])
+@route_cors(allow_methods=["POST", "OPTIONS"])
 async def upload_file_full():
     """API endpoint for uploading a user file.
     To upload to this endpoint, send a POST request with a FormData body (no JSON) containing a single file.
@@ -111,6 +112,7 @@ async def upload_file(client: supabase.Client, files):
 
 
 @uploads_bp.route("/get_file", methods=["GET", "OPTIONS"])
+@route_cors(allow_methods=["GET", "OPTIONS"])
 async def get_file_full():
     """Given a file UUID, this endpoint redirects to the public URL of the file.
     Use the "id" query parameter to specify the file UUID, for example:
@@ -138,5 +140,4 @@ async def get_file(client: supabase.Client, data: multidict.MultiDict):
     file_url = await client.storage.from_("UserMessageFiles").get_public_url(f"{file_id}/{filename}")
     # Return redirect to the file URL
     resp = quart.redirect(file_url, code=303)
-    resp.headers.extend(COMMON_HEADERS)
     return resp

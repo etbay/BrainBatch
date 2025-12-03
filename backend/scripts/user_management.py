@@ -1,12 +1,7 @@
 import quart
 import supabase
-import supabase_auth
-from headers import COMMON_HEADERS
-import supabase_auth.errors as supa_errors
-from app_globals import SUPA_URL, SUPA_KEY
 from misc_utils import *
 import multidict
-import random
 
 
 user_bp = quart.Blueprint('users', __name__, url_prefix='/users')

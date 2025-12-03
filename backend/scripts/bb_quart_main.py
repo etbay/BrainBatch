@@ -1,17 +1,24 @@
-def create_app():
-    import quart
-    import tracemalloc
-
-    tracemalloc.start()
-    app = quart.Quart(__name__)
-
-    from user_management import user_bp
-    from group_management import group_bp
-
-    app.register_blueprint(user_bp)
-    app.register_blueprint(group_bp)
-    app.run(host="127.0.0.1", port=5000)
+import quart
+import tracemalloc
+import re
+from quart_cors import cors
+from app_globals import *
 
 
-if __name__ == "__main__":
-    create_app()
+tracemalloc.start()
+app = quart.Quart(__name__)
+
+from user_management import user_bp
+from group_management import group_bp
+from file_uploads import uploads_bp
+
+app.register_blueprint(user_bp)
+app.register_blueprint(group_bp)
+app.register_blueprint(uploads_bp)
+app.run(host="127.0.0.1", port=QUART_PORT, use_reloader=False)
+
+# Set allowed CORS origins and headers
+app = cors(app, allow_headers="*", allow_origin=re.compile(r"https?:\/\/(((\S+\.)?brainbatch\.xyz)|(localhost|127\.0\.0\.1)(:\d+)?)"))
+
+# Set maximum file upload size to 5 MiB
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024

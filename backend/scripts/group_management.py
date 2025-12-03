@@ -1,6 +1,5 @@
 import quart
 import supabase
-from headers import COMMON_HEADERS
 import supabase_auth.errors as supa_errors
 from app_globals import SUPA_URL, SUPA_KEY
 from misc_utils import *

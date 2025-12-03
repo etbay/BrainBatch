@@ -27,21 +27,23 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/about" | "/canvas" | "/createaccount" | "/login" | "/profile" | "/sverdle" | "/sverdle/how-to-play";
+		RouteId(): "/" | "/about" | "/canvas" | "/createaccount" | "/groups" | "/groups/[group_id]" | "/login" | "/profile" | "/sverdle" | "/sverdle/how-to-play";
 		RouteParams(): {
-			
+			"/groups/[group_id]": { group_id: string }
 		};
 		LayoutParams(): {
-			"/": Record<string, never>;
+			"/": { group_id?: string };
 			"/about": Record<string, never>;
 			"/canvas": Record<string, never>;
 			"/createaccount": Record<string, never>;
+			"/groups": { group_id?: string };
+			"/groups/[group_id]": { group_id: string };
 			"/login": Record<string, never>;
 			"/profile": Record<string, never>;
 			"/sverdle": Record<string, never>;
 			"/sverdle/how-to-play": Record<string, never>
 		};
-		Pathname(): "/" | "/about" | "/about/" | "/canvas" | "/canvas/" | "/createaccount" | "/createaccount/" | "/login" | "/login/" | "/profile" | "/profile/" | "/sverdle" | "/sverdle/" | "/sverdle/how-to-play" | "/sverdle/how-to-play/";
+		Pathname(): "/" | "/about" | "/about/" | "/canvas" | "/canvas/" | "/createaccount" | "/createaccount/" | "/groups" | "/groups/" | `/groups/${string}` & {} | `/groups/${string}/` & {} | "/login" | "/login/" | "/profile" | "/profile/" | "/sverdle" | "/sverdle/" | "/sverdle/how-to-play" | "/sverdle/how-to-play/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/favicon.svg" | "/robots.txt" | string & {};
 	}

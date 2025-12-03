@@ -15,7 +15,6 @@ from file_uploads import uploads_bp
 app.register_blueprint(user_bp)
 app.register_blueprint(group_bp)
 app.register_blueprint(uploads_bp)
-app.run(host="127.0.0.1", port=QUART_PORT, use_reloader=False, debug=True)
 
 # Set allowed CORS origins, headers, and methods
 app = cors(app, 
@@ -26,3 +25,6 @@ app = cors(app,
 
 # Set maximum file upload size to 5 MiB
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+
+# Run the Quart app
+app.run(host="127.0.0.1", port=QUART_PORT, use_reloader=False)

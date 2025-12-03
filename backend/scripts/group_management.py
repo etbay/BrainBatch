@@ -1,7 +1,5 @@
 import quart
 import supabase
-import supabase_auth.errors as supa_errors
-from app_globals import SUPA_URL, SUPA_KEY
 from misc_utils import *
 from werkzeug.datastructures import FileStorage
 import uuid
@@ -17,7 +15,7 @@ def chat_area_base(name: str) -> dict:
     }
 
 
-@group_bp.route("/get_group", methods=["POST", "OPTIONS"])
+@group_bp.route("/get_group", methods=["POST"])
 async def get_group_full() -> quart.Response | tuple:
     """Gets the group of the specified id. Use "id" to specify the group id to search for.
     Returns a full group object.
@@ -29,7 +27,7 @@ async def get_group(client, data) -> quart.Response | tuple:
     return await client.table("group_data").select("*").eq("id", data["id"]).execute()
 
 
-@group_bp.route("/new_group", methods=["POST", "OPTIONS"])
+@group_bp.route("/new_group", methods=["POST"])
 async def create_group_full() -> quart.Response | tuple:
     """Creates a new group. Use "group_name" to specify the name and "creator_id" to specify the id of the creator.
     Returns a full group object.
@@ -46,7 +44,7 @@ async def create_group(client, data) -> quart.Response | tuple:
     }).execute()
 
 
-@group_bp.route("/add_member", methods=["POST", "OPTIONS"])
+@group_bp.route("/add_member", methods=["POST"])
 async def add_member_full() -> quart.Response | tuple:
     """Adds a member to the specified group. Note that if the new member is a moderator,
     then they will be removed from the moderators list. Use "group_id" to specify the id of the group
@@ -62,7 +60,7 @@ async def add_member(client, data) -> quart.Response | tuple:
     moderators: list = group_data["moderators"]
 
     if data["user_id"] in members:
-        raise ValueError("User was already a member.")
+        return make_error("User is already a member.", 400)
 
     if data["user_id"] in moderators:
         moderators.remove(data["user_id"])
@@ -75,7 +73,7 @@ async def add_member(client, data) -> quart.Response | tuple:
     }).eq("id", data["group_id"]).execute()
 
 
-@group_bp.route("/remove_member", methods=["POST", "OPTIONS"])
+@group_bp.route("/remove_member", methods=["POST"])
 async def remove_member_full() -> quart.Response | tuple:
     """Removes a member from the specified group. Use "group_id" to specify the id of the group
     and "user_id" to specify the id of the user to remove. Returns a full group object.
@@ -89,7 +87,7 @@ async def remove_member(client, data):
     members: list = group_data["members"]
 
     if data["user_id"] not in members:
-        raise ValueError("User was already not a member")
+        return make_error("User is not a member.", 400)
     
     members.remove(data["user_id"])
 
@@ -98,7 +96,7 @@ async def remove_member(client, data):
     }).eq("id", data["group_id"]).execute()
 
 
-@group_bp.route("/add_moderator", methods=["POST", "OPTIONS"])
+@group_bp.route("/add_moderator", methods=["POST"])
 async def add_moderator_full() -> quart.Response | tuple:
     """Adds a moderator to the specified group. Note that if the new moderator is already a member,
     then they will be removed from the members list. Use "group_id" to specify the id of the group
@@ -114,7 +112,7 @@ async def add_moderator(client, data):
     moderators: list = group_data["moderators"]
 
     if data["user_id"] in moderators:
-        raise ValueError("User was already a moderator.")
+        return make_error("User is already a moderator.", 400)
 
     if data["user_id"] in members:
         members.remove(data["user_id"])
@@ -127,7 +125,7 @@ async def add_moderator(client, data):
     }).eq("id", data["group_id"]).execute()
 
 
-@group_bp.route("/remove_moderator", methods=["POST", "OPTIONS"])
+@group_bp.route("/remove_moderator", methods=["POST"])
 async def remove_moderator_full() -> quart.Response | tuple:
     """Remove the moderator from the specified group. Use "group_id" to specify the group
     and "user_id" to specify the moderator to remove. Returns a full group object.
@@ -141,7 +139,7 @@ async def remove_moderator(client, data):
     moderators: list = group_data["moderators"]
 
     if data["user_id"] not in moderators:
-        raise ValueError("User was already not a moderator.")
+        return make_error("User is not a moderator.", 400)
     
     moderators.remove(data["user_id"])
 
@@ -150,7 +148,7 @@ async def remove_moderator(client, data):
     }).eq("id", data["group_id"]).execute()
 
 
-@group_bp.route("/add_chat_area", methods=["POST", "OPTIONS"])
+@group_bp.route("/add_chat_area", methods=["POST"])
 async def add_chat_area_full() -> quart.Response | tuple:
     """Adds a chat area to the specifie group. Note that two chat areas cannot be of the same name.
     Use "group_id" to specify the group and "chat_area_name" to specify the name of the new area.
@@ -165,7 +163,7 @@ async def add_chat_area(client, data) -> quart.Response | tuple:
 
     for chat_area in chat_areas:
         if data["chat_area_name"] == chat_area["name"]:
-            return ValueError("Chat area already existed")
+            return make_error("Chat area already exists.", 400)
     
     chat_areas.append(chat_area_base(data["chat_area_name"]))
     return await client.table("group_data").update({
@@ -173,7 +171,7 @@ async def add_chat_area(client, data) -> quart.Response | tuple:
     }).eq("id", data["group_id"]).execute()
 
 
-@group_bp.route("/remove_chat_area", methods=["POST", "OPTIONS"])
+@group_bp.route("/remove_chat_area", methods=["POST"])
 async def remove_chat_area_full() -> quart.Response | tuple:
     """Removes the chat area from the specified group. Use "group_id" to specify the group
     and "chat_area_name" to specify the area's name to remove.
@@ -198,14 +196,14 @@ async def remove_chat_area(client, data) -> quart.Response | tuple:
             break
     
     if area_missing:
-        return ValueError("Chat area already doesn't exist")
+        return make_error("Chat area not found.", 400)
     
     return await client.table("group_data").update({
         "chat_areas": chat_areas
     }).eq("id", data["group_id"]).execute()
 
 
-@group_bp.route("/send_message", methods=["POST", "OPTIONS"])
+@group_bp.route("/send_message", methods=["POST"])
 async def send_message_full() -> quart.Response | tuple:
     """Sends a message in the specified chat area of the specified group. Use "group_id" to specify the group,
     "chat_area_name" to specify the name of the chat area, "message" to specify the message text,
@@ -214,7 +212,7 @@ async def send_message_full() -> quart.Response | tuple:
     return await request_shell(send_message, input_type="files")
 
 
-async def send_message(client: supabase.Client, data) -> quart.Response | tuple:
+async def send_message(client: supabase.AsyncClient, data) -> quart.Response | tuple:
     js_data = data["json"]
     files = data["files"]
     
@@ -252,14 +250,14 @@ async def send_message(client: supabase.Client, data) -> quart.Response | tuple:
             break
     
     if area_missing:
-        raise ValueError("Chat area does not exist")
+        return make_error("Chat area not found.", 400)
 
     return await client.table("group_data").update({
         "chat_areas": chat_areas
     }).eq("id", js_data["group_id"]).execute()
 
 
-@group_bp.route("/delete_message", methods=["POST", "OPTIONS"])
+@group_bp.route("/delete_message", methods=["POST"])
 async def delete_message_full() -> quart.Response | tuple:
     """Deletes a message from the specified group. Use "group_id" to specify the group,
     "chat_area_name" to specify the name of the area to remove from,
@@ -269,7 +267,7 @@ async def delete_message_full() -> quart.Response | tuple:
     return await request_shell(delete_message)
 
 
-async def delete_message(client: supabase.Client, data: dict) -> quart.Response | tuple:
+async def delete_message(client: supabase.AsyncClient, data: dict) -> quart.Response | tuple:
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     chat_areas: list[dict] = response.data[0]["chat_areas"]
     area_missing = True
@@ -277,7 +275,7 @@ async def delete_message(client: supabase.Client, data: dict) -> quart.Response 
     for chat_area in chat_areas:
         if data["chat_area_name"] == chat_area["name"]:
             if data["message_index"] < 0 and data["message_index"] >= len(chat_area["messages"]):
-                return IndexError("Message index out of range.")
+                return make_error("Message index is out of bounds.", 400)
             
             message = chat_area["messages"][data["message_index"]]
 
@@ -289,7 +287,7 @@ async def delete_message(client: supabase.Client, data: dict) -> quart.Response 
             break
     
     if area_missing:
-        return ValueError("Chat area does not exist.")
+        return make_error("Chat area not found.", 400)
     
     return await client.table("group_data").update({
         "chat_areas": chat_areas

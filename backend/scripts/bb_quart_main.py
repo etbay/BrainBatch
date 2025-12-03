@@ -15,10 +15,14 @@ from file_uploads import uploads_bp
 app.register_blueprint(user_bp)
 app.register_blueprint(group_bp)
 app.register_blueprint(uploads_bp)
-app.run(host="127.0.0.1", port=QUART_PORT, use_reloader=False)
+app.run(host="127.0.0.1", port=QUART_PORT, use_reloader=False, debug=True)
 
-# Set allowed CORS origins and headers
-app = cors(app, allow_headers="*", allow_origin=re.compile(r"https?:\/\/(((\S+\.)?brainbatch\.xyz)|(localhost|127\.0\.0\.1)(:\d+)?)"))
+# Set allowed CORS origins, headers, and methods
+app = cors(app, 
+           allow_headers="*", 
+           allow_methods=["GET", "POST", "OPTIONS"],
+           allow_origin=re.compile(r"https?:\/\/(((\S+\.)?brainbatch\.xyz)|(localhost|127\.0\.0\.1)(:\d+)?)")
+           )
 
 # Set maximum file upload size to 5 MiB
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024

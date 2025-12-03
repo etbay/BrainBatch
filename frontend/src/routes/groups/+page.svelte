@@ -92,7 +92,7 @@
 {:else}
     <ul>
         {#each groups as g}
-            <li><a href={'/groups/${g.id}'}>{g.name}</a></li>
+            <li><a href={`/groups/${g.id}`}>{g.name}</a></li>
         {:else}
             <p>No groups found. Create one to get started!</p>
         {/each}

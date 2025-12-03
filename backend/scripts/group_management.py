@@ -42,6 +42,34 @@ async def get_all_groups(client, data) -> quart.Response | tuple:
         print(f"Database query failed: {e}")
         raise
 
+@group_bp.route("/get_joinable_groups", methods=["POST", "OPTIONS"])
+async def get_joinable_groups_full() -> quart.Response | tuple:
+    """Gets all groups that the user is not a member of and have an empty password."""
+    return await request_shell(get_joinable_groups)
+
+async def get_joinable_groups(client, data) -> quart.Response | tuple:
+    try:
+        user_id = data.get("user_id")
+        print(f"Received user_id: {user_id}")
+
+        # Fetch all groups and filter server-side
+        response = await client.table("group_data").select("*").execute()
+        groups = response.data or []
+
+        joinable = []
+        for g in groups:
+            members = g.get("members") or []
+            password = g.get("password")
+            if user_id not in members and (password is None or password == ""):
+                joinable.append(g)
+
+        # Keep returning the supabase response object so misc_utils.config_response can use .data
+        response.data = joinable
+        return response
+    except Exception as e:
+        print(f"Error in get_joinable_groups: {e}")
+        raise
+
 @group_bp.route("/new_group", methods=["POST", "OPTIONS"])
 async def create_group_full() -> quart.Response | tuple:
     """Creates a new group. Use "group_name" to specify the name and "creator_id" to specify the id of the creator.

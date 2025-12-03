@@ -136,7 +136,6 @@ async def get_file(client: supabase.Client, data: multidict.MultiDict):
     
     # Get public URL of the file
     file_url = await client.storage.from_("UserMessageFiles").get_public_url(f"{file_id}/{filename}")
-
     # Return redirect to the file URL
     resp = quart.redirect(file_url, code=303)
     resp.headers.extend(COMMON_HEADERS)

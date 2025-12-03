@@ -57,7 +57,10 @@ async def request_shell(action, response_config = config_response, input_type = 
         case "json":
             action_input = await quart.request.json
         case "files":
-            action_input = await quart.request.files
+            action_input = {
+                "json": await quart.request.form,
+                "files": await quart.request.files
+            }
         case "args":
             action_input = quart.request.args
         case _:

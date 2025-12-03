@@ -4,6 +4,8 @@ from headers import COMMON_HEADERS
 import supabase_auth.errors as supa_errors
 from app_globals import SUPA_URL, SUPA_KEY
 from misc_utils import *
+from werkzeug.datastructures import FileStorage
+import uuid
 
 
 group_bp = quart.Blueprint('groups', __name__, url_prefix='/groups')
@@ -188,6 +190,10 @@ async def remove_chat_area(client, data) -> quart.Response | tuple:
 
     for chat_area in chat_areas:
         if data["chat_area_name"] == chat_area["name"]:
+            for message in chat_area["messages"]:
+                if "attachment_path" in message and len(message["attachment_path"]) > 0:
+                    await client.storage.from_("UserMessageFiles").remove(message["attachment_path"])
+
             chat_areas.remove(chat_area)
             area_missing = False
             break
@@ -204,33 +210,54 @@ async def remove_chat_area(client, data) -> quart.Response | tuple:
 async def send_message_full() -> quart.Response | tuple:
     """Sends a message in the specified chat area of the specified group. Use "group_id" to specify the group,
     "chat_area_name" to specify the name of the chat area, "message" to specify the message text,
-    and "sender_id" to specify the user sending the message.
-    Returns a full group object.
+    and "sender_id" to specify the user sending the message. Returns a full group object.
     """
-    return await request_shell(send_message)
+    return await request_shell(send_message, input_type="files")
 
 
-async def send_message(client, data) -> quart.Response | tuple:
-    response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
+async def send_message(client: supabase.Client, data) -> quart.Response | tuple:
+    js_data = data["json"]
+    files = data["files"]
+    
+    response = await client.table("group_data").select("*").eq("id", js_data["group_id"]).execute()
     chat_areas: list[dict] = response.data[0]["chat_areas"]
     area_missing = True
+    
+    if len(files) > 0:
+        file: FileStorage = files.getlist(list(files.keys())[0])[0]
+        file_id = str(uuid.uuid4())
+        file_path = f"{file_id}/{file.filename}"
+
+        await client.storage.from_("UserMessageFiles").upload(
+            path=file_path,
+            file=file.stream.read(),
+            file_options={"content_type": str(file.mimetype)}
+        )
+        
+        # Public URL of the uploaded file
+        file_url = await client.storage.from_("UserMessageFiles").get_public_url(file_path)
+    else:
+        file_path = ""
+        file_url = ""
 
     for chat_area in chat_areas:
-        if data["chat_area_name"] == chat_area["name"]:
+        if js_data["chat_area_name"] == chat_area["name"]:
             chat_area["messages"].append({
-                "sender_id": data["sender_id"],
-                "contents": data["message"]
+                "sender_id": js_data["sender_id"],
+                "contents": js_data["message"],
+                "attachment_path": file_path,
+                "attachment_url": file_url
             })
 
             area_missing = False
             break
     
     if area_missing:
-        return ValueError("Chat area does not exist")
+        raise ValueError("Chat area does not exist")
 
     return await client.table("group_data").update({
         "chat_areas": chat_areas
-    }).eq("id", data["group_id"]).execute()
+    }).eq("id", js_data["group_id"]).execute()
 
 
 @group_bp.route("/delete_message", methods=["POST", "OPTIONS"])
@@ -243,7 +270,7 @@ async def delete_message_full() -> quart.Response | tuple:
     return await request_shell(delete_message)
 
 
-async def delete_message(client, data) -> quart.Response | tuple:
+async def delete_message(client: supabase.Client, data: dict) -> quart.Response | tuple:
     response = await client.table("group_data").select("*").eq("id", data["group_id"]).execute()
     chat_areas: list[dict] = response.data[0]["chat_areas"]
     area_missing = True
@@ -252,7 +279,12 @@ async def delete_message(client, data) -> quart.Response | tuple:
         if data["chat_area_name"] == chat_area["name"]:
             if data["message_index"] < 0 and data["message_index"] >= len(chat_area["messages"]):
                 return IndexError("Message index out of range.")
+            
+            message = chat_area["messages"][data["message_index"]]
 
+            if "attachment_path" in message and len(message["attachment_path"]) > 0:
+                await client.storage.from_("UserMessageFiles").remove([message["attachment_path"]])
+            
             del chat_area["messages"][data["message_index"]]
             area_missing = False
             break

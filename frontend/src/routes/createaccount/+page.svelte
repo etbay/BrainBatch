@@ -16,7 +16,7 @@
         event.preventDefault();
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/users/new_user', {
+            const res = await fetch('https://api.brainbatch.xyz/users/new_user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),
@@ -38,7 +38,7 @@
                 errorMessage = (result && result.message) ? result.message : 'Username or email already in use.';
             }
         } catch (err) {
-            errorMessage = 'Cannot reach backend. Is the server running on http://127.0.0.1:5000?';
+            errorMessage = 'Cannot reach backend. Is the server running on https://api.brainbatch.xyz?';
         }
     }
 </script>

@@ -32,7 +32,7 @@
         error = '';
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/groups/get_all_groups', {
+            const res = await fetch('https://api.brainbatch.xyz/groups/get_all_groups', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -59,7 +59,7 @@
         }
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/groups/get_joinable_groups', {
+            const res = await fetch('https://api.brainbatch.xyz/groups/get_joinable_groups', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -95,7 +95,7 @@
         }
 
         if (!newGroupName.trim()) return;
-        const res = await fetch('http://127.0.0.1:5000/groups/new_group', {
+        const res = await fetch('https://api.brainbatch.xyz/groups/new_group', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -121,7 +121,7 @@
         }
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/groups/add_member', {
+            const res = await fetch('https://api.brainbatch.xyz/groups/add_member', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

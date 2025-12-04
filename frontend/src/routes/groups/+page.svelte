@@ -67,7 +67,6 @@
                 body: JSON.stringify({ user_id: $auth.userId })
             });
 
-            // Check if the response is JSON
             const contentType = res.headers.get('Content-Type');
             if (!contentType || !contentType.includes('application/json')) {
                 throw new Error('Invalid response format');

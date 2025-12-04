@@ -52,7 +52,6 @@ async def get_joinable_groups(client, data) -> quart.Response | tuple:
         user_id = data.get("user_id")
         print(f"Received user_id: {user_id}")
 
-        # Fetch all groups and filter server-side
         response = await client.table("group_data").select("*").execute()
         groups = response.data or []
 
@@ -63,7 +62,6 @@ async def get_joinable_groups(client, data) -> quart.Response | tuple:
             if user_id not in members and (password is None or password == ""):
                 joinable.append(g)
 
-        # Keep returning the supabase response object so misc_utils.config_response can use .data
         response.data = joinable
         return response
     except Exception as e:

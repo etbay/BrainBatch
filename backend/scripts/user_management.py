@@ -57,23 +57,48 @@ async def create_user_full() -> dict | int:
 
 
 async def create_user(client: supabase.Client, data: dict) -> tuple:
-    sign_up_response = await client.auth.sign_up({
-        "email": data["email"],
-        "password": data["password"]
-    })
-    
     name_response = await client.table("user_data").select("*").eq("username", data["username"]).execute()
     if len(name_response.data) > 0:
         raise ValueError("Username already exists.")
 
+    email_response = await client.table("user_data").select("*").eq("email", data["email"]).execute()
+    if len(email_response.data) > 0:
+        raise ValueError("Email already exists.")
+
+    try:
+        sign_up_response = await client.auth.sign_up({
+            "email": data["email"],
+            "password": data["password"]
+        })
+    except Exception as e:
+        raise ValueError(f"Sign up failed: {str(e)}")
+
+    if isinstance(sign_up_response, dict):
+        err = sign_up_response.get("error") or sign_up_response.get("message")
+        user_obj = sign_up_response.get("user")
+        session_obj = sign_up_response.get("session")
+    else:
+        err = getattr(sign_up_response, "error", None) or getattr(sign_up_response, "message", None)
+        user_obj = getattr(sign_up_response, "user", None)
+        session_obj = getattr(sign_up_response, "session", None)
+
+    if err:
+        raise ValueError(f"Sign up failed: {err}")
+
+    if not user_obj:
+        raise ValueError("Sign up failed: no user returned from auth provider.")
+
+    user_id = getattr(user_obj, "id", None) or (user_obj.get("id") if isinstance(user_obj, dict) else None)
+    if not user_id:
+        raise ValueError("Sign up failed: could not determine new user id.")
+
     await client.table("user_data").insert({
-        "id": sign_up_response.user.id,
+        "id": user_id,
         "email": data["email"],
-        "username": data["username"],
-        "password": data["password"]
+        "username": data["username"]
     }).execute()
-    
-    return sign_up_response.user.id, sign_up_response.session
+
+    return user_id, session_obj
 
 
 @user_bp.route("/update_user_settings", methods=["POST", "OPTIONS"])

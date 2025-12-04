@@ -8,9 +8,9 @@ import time
 @pytest.fixture
 def manage_driver():
     print("Starting and getting driver...")
-    service = Service(executable_path="tests/msedgedriver.exe")
+    service = Service(executable_path="tests/msedgedriver")
     driver = webdriver.Edge(service=service)
-    driver.get("http://localhost:5173/login")
+    driver.get("http://localhost:3000/login")
 
     print("Driver acquired")
     yield driver

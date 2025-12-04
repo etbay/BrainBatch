@@ -5,7 +5,6 @@
 
     let userData = {
         username: '',
-        display_name: '',
         email: '',
         password: ''
     };
@@ -57,11 +56,6 @@
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" bind:value={userData.username} pattern="\w&#123;3,24&#125;" required>
             <small>A 3 to 24 character name unique to your account. Can contain letters, numbers, and underscores.</small>
-        </div>
-        <div class="form-field">
-            <label for="displayname">Display name:</label>
-            <input type="text" name="displayname" id="displayname" bind:value={userData.display_name}>
-            <small>Should be your real name or something others can identify you with.</small>
         </div>
         <div class="form-field">
             <label for="email">Email address:</label>

@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import logo from '$lib/images/svelte-logo.svg';
+	import { auth } from '$lib/stores/auth';
 	import github from '$lib/images/github.svg';
 </script>
 
@@ -17,18 +18,22 @@
 			<li aria-current={page.url.pathname === '/' ? 'page' : undefined}>
 				<a href="/">Home</a>
 			</li>
-			<li aria-current={page.url.pathname === '/login' ? 'page' : undefined}>
-				<a href="/login">Log in</a>
-			</li>
-			<li aria-current={page.url.pathname === '/createaccount' ? 'page' : undefined}>
-				<a href="/createaccount">Create Account</a>
-			</li>
-			<li aria-current={page.url.pathname === '/canvas' ? 'page' : undefined}>
-				<a href="/canvas">Canvas</a>
-			</li>
-			<li aria-current={page.url.pathname === '/profile' ? 'page' : undefined}>
-				<a href="/profile">Profile</a>
-			</li>
+			{#if !$auth.isLoggedIn}
+				<li aria-current={page.url.pathname === '/login' ? 'page' : undefined}>
+					<a href="/login">Log in</a>
+				</li>
+				<li aria-current={page.url.pathname === '/createaccount' ? 'page' : undefined}>
+					<a href="/createaccount">Create Account</a>
+				</li>
+			{/if}
+			{#if $auth.isLoggedIn}
+				<li aria-current={page.url.pathname === '/canvas' ? 'page' : undefined}>
+					<a href="/canvas">Canvas</a>
+				</li>
+				<li aria-current={page.url.pathname === '/profile' ? 'page' : undefined}>
+					<a href="/profile">Profile</a>
+				</li>
+			{/if}
 		</ul>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
@@ -60,6 +65,7 @@
 		width: 100%;
 		height: 100%;
 		padding-left: 1em;
+		color: #1877f2;
 	}
 
 	.corner img {

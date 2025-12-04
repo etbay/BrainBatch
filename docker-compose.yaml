@@ -5,9 +5,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - 127.0.0.1:5000:5000
-    volumes:
-      - ./backend:/app
+      - 5173:5173
     networks:
       - brain-batch-net
   
@@ -17,12 +15,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - 0.0.0.0:3000:3000
+      - 3000:3000
     networks:
       - brain-batch-net
-    volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/static:/app/static
     depends_on:
       - brain-batch-backend
 

@@ -16,7 +16,7 @@ def create_app():
     app.register_blueprint(user_bp)
     app.register_blueprint(group_bp)
     app.register_blueprint(uploads_bp)
-    app.run(host="127.0.0.1", port=5173)
+    app.run(host="0.0.0.0", port=5173)
 
 
 if __name__ == "__main__":

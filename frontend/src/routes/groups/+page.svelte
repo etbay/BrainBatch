@@ -4,6 +4,7 @@
     import { goto } from '$app/navigation';
 
     let groups = [];
+    let joinableGroups = [];
     let loading = true;
     let error = '';
     let newGroupName = '';
@@ -16,6 +17,7 @@
         }
 
         loadGroups();
+        loadJoinableGroups();
     }
 
     async function loadGroups() {
@@ -49,6 +51,42 @@
         }
     }
 
+    async function loadJoinableGroups() {
+        console.log("Loading joinable groups...");
+        if (!$auth.isLoggedIn) {
+            console.error('Error: No user logged in');
+            return;
+        }
+
+        try {
+            const res = await fetch('http://127.0.0.1:5000/groups/get_joinable_groups', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: $auth.userId })
+            });
+
+            const contentType = res.headers.get('Content-Type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Invalid response format');
+            }
+
+            const response = await res.json();
+            console.log('Joinable groups data:', response);
+
+            if (!res.ok || response.error) {
+                throw new Error(response.error || 'Failed to load joinable groups');
+            }
+
+            joinableGroups = Array.isArray(response.data) ? response.data : [];
+            console.log("Joinable groups loaded:", joinableGroups);
+        } catch (e) {
+            console.error('Error:', e);
+            error = e.message;
+        }
+    }
+
     async function createGroup() {
         if (!$auth.userId)
         {
@@ -76,6 +114,37 @@
         await loadGroups();
     }
 
+    async function joinGroup(groupId) {
+        if (!$auth.userId) {
+            console.error('Error: No user logged in');
+            return;
+        }
+
+        try {
+            const res = await fetch('http://127.0.0.1:5000/groups/add_member', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    group_id: groupId,
+                    user_id: $auth.userId
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                error = data.error || 'Failed to join group';
+                return;
+            }
+            console.log('Joined group:', data);
+            await loadGroups();
+            await loadJoinableGroups();
+        } catch (e) {
+            console.error('Error:', e);
+            error = e.message;
+        }
+    }
+
     onMount(verifyLogin);
 </script>
 
@@ -97,4 +166,18 @@
             <p>No groups found. Create one to get started!</p>
         {/each}
     </ul>
+{/if}
+
+<h2>Joinable Groups</h2>
+{#if joinableGroups.length > 0}
+    <ul>
+        {#each joinableGroups as group}
+            <li>
+                {group.name}
+                <button on:click={() => joinGroup(group.id)}>Join</button>
+            </li>
+        {/each}
+    </ul>
+{:else}
+    <p>No joinable groups available.</p>
 {/if}

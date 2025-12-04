@@ -11,41 +11,35 @@
     };
 
     let errorMessage = '';
+    let rawDebug = ''; 
 
     async function createAccount(event) {
         event.preventDefault();
 
-        const createAccountAttempt = await fetch('http://127.0.0.1:5000/users/new_user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
+        try {
+            const res = await fetch('http://127.0.0.1:5000/users/new_user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+                mode: 'cors'
+            });
 
-        if (createAccountAttempt.ok) {
-            const result = await createAccountAttempt.json();
-            if (result.success)
-            {
-                console.log('Account created successfully!');
+            const result = await res.json().catch(() => null);
+
+            if (!res.ok) {
+                errorMessage = (result && result.message) ? result.message : `Server error: ${res.status}`;
+                return;
+            }
+
+            if (result && result.success) {
                 errorMessage = '';
-                console.log(result.data.id)
-
-                auth.set({
-                    userId: result.data.id, 
-                    isLoggedIn: true
-                });
-
-                goto('/profile')
+                auth.set({ userId: result.data?.id || result.id, isLoggedIn: true });
+                goto('/profile');
+            } else {
+                errorMessage = (result && result.message) ? result.message : 'Username or email already in use.';
             }
-            else
-            {
-                console.log('Username or email already in use.');
-                errorMessage = 'Username or email already in use.';
-            }
-        } else {
-            const error = await createAccountAttempt.json();
-            alert(`Error: ${error.message}`);
+        } catch (err) {
+            errorMessage = 'Cannot reach backend. Is the server running on http://127.0.0.1:5000?';
         }
     }
 </script>

@@ -11,7 +11,11 @@
     async function linkCanvasAccount() {
         error = '';
         courses = [];
+<<<<<<< Updated upstream
         const res = await fetch('http://localhost:8000/api/canvas/courses/', {
+=======
+        const res = await fetch('http://localhost:5173/api/canvas/courses/', {
+>>>>>>> Stashed changes
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ access_token: accessToken })

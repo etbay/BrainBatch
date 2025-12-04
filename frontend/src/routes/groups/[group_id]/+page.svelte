@@ -4,7 +4,7 @@
     import { page } from '$app/stores';
     import { tick } from 'svelte';
     import { goto } from '$app/navigation';
-    const BACKEND = 'http://127.0.0.1:5000';
+    const BACKEND = 'http://localhost:5173';
 
     let group = null;
     let messages = [];

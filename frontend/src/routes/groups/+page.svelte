@@ -30,7 +30,7 @@
         error = '';
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/groups/get_all_groups', {
+            const res = await fetch('http://localhost:5173/groups/get_all_groups', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -49,6 +49,45 @@
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    async function loadJoinableGroups() {
+        console.log("Loading joinable groups...");
+        if (!$auth.isLoggedIn) {
+            console.error('Error: No user logged in');
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:5173/groups/get_joinable_groups', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: $auth.userId })
+            });
+
+            const contentType = res.headers.get('Content-Type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Invalid response format');
+            }
+
+            const response = await res.json();
+            console.log('Joinable groups data:', response);
+
+            if (!res.ok || response.error) {
+                throw new Error(response.error || 'Failed to load joinable groups');
+            }
+
+            joinableGroups = Array.isArray(response.data) ? response.data : [];
+            console.log("Joinable groups loaded:", joinableGroups);
+        } catch (e) {
+            console.error('Error:', e);
+            error = e.message;
+        }
+    }
+
+>>>>>>> Stashed changes
     async function createGroup() {
         if (!$auth.userId)
         {
@@ -57,7 +96,7 @@
         }
 
         if (!newGroupName.trim()) return;
-        const res = await fetch('http://127.0.0.1:5000/groups/new_group', {
+        const res = await fetch('http://localhost:5173/groups/new_group', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,6 +115,40 @@
         await loadGroups();
     }
 
+<<<<<<< Updated upstream
+=======
+    async function joinGroup(groupId) {
+        if (!$auth.userId) {
+            console.error('Error: No user logged in');
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:5173/groups/add_member', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    group_id: groupId,
+                    user_id: $auth.userId
+                })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                error = data.error || 'Failed to join group';
+                return;
+            }
+            console.log('Joined group:', data);
+            await loadGroups();
+            await loadJoinableGroups();
+        } catch (e) {
+            console.error('Error:', e);
+            error = e.message;
+        }
+    }
+
+>>>>>>> Stashed changes
     onMount(verifyLogin);
 </script>
 

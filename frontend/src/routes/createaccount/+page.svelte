@@ -15,6 +15,7 @@
     async function createAccount(event) {
         event.preventDefault();
 
+<<<<<<< Updated upstream
         const createAccountAttempt = await fetch('http://127.0.0.1:5000/users/new_user', {
             method: 'POST',
             headers: {
@@ -22,6 +23,15 @@
             },
             body: JSON.stringify(userData)
         });
+=======
+        try {
+            const res = await fetch('http://localhost:5173/users/new_user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+                mode: 'cors'
+            });
+>>>>>>> Stashed changes
 
         if (createAccountAttempt.ok) {
             const result = await createAccountAttempt.json();
